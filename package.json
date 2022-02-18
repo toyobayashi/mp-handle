@@ -2,6 +2,7 @@
   "name": "uni-preset-vue",
   "version": "0.0.0",
   "scripts": {
+    "dev": "uni -p mp-weixin",
     "dev:app": "uni -p app",
     "dev:custom": "uni -p",
     "dev:h5": "uni",
@@ -16,6 +17,7 @@
     "dev:quickapp-webview": "uni -p quickapp-webview",
     "dev:quickapp-webview-huawei": "uni -p quickapp-webview-huawei",
     "dev:quickapp-webview-union": "uni -p quickapp-webview-union",
+    "build": "uni build -p mp-weixin",
     "build:app": "uni build -p app",
     "build:custom": "uni build -p",
     "build:h5": "uni build",
@@ -45,6 +47,7 @@
     "@dcloudio/uni-mp-weixin": "^3.0.0-alpha-3030820220114011",
     "@dcloudio/uni-quickapp-webview": "^3.0.0-alpha-3030820220114011",
     "pinia": "^2.0.11",
+    "pinyin": "^2.10.2",
     "vue": "^3.2.30",
     "vue-i18n": "^9.1.9"
   },
@@ -53,6 +56,7 @@
     "@dcloudio/uni-automator": "^3.0.0-alpha-3030820220114011",
     "@dcloudio/uni-cli-shared": "^3.0.0-alpha-3030820220114011",
     "@dcloudio/vite-plugin-uni": "^3.0.0-alpha-3030820220114011",
+    "@types/pinyin": "^2.10.0",
     "autoprefixer": "^10.4.2",
     "sass": "^1.49.7",
     "typescript": "^4.5.2",

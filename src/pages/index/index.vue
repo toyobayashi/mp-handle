@@ -1,6 +1,9 @@
 <script lang="ts">
-const aaa = 111
+import AnswerInput from '../../components/AnswerInput.vue'
 export default {
+  components: {
+    AnswerInput
+  },
   onShareAppMessage () {
     return {}
   }
@@ -8,30 +11,21 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 import { useMainStore } from '../../store/index'
-const title = ref('Hello111')
-console.log(aaa)
+
 const mainStore = useMainStore()
-console.log(mainStore)
 </script>
 
 <template>
   <view class="content">
-    <image class="logo" src="/static/logo.png" />
-    <view class="text-area" @click="mainStore.add()">
-      <text class="title">{{ mainStore.a }}</text>
-      <text class="title">{{ mainStore.aa }}</text>
-    </view>
+    <AnswerInput />
+    <view>{{mainStore.$state.answerInput}}</view>
   </view>
 </template>
 
 <style lang="scss" scoped>
 .content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  padding: 16rpx;
 
   .logo {
     height: 200rpx;
