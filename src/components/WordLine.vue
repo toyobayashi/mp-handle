@@ -3,6 +3,9 @@ import { computed } from 'vue'
 import KanjiBox from './KanjiBox.vue'
 import { parsePinyin, getPinyin } from '../utils/pinyin'
 import type { Props as KanjiBoxProps } from './KanjiBox.vue'
+import { useMainStore } from '../store'
+
+const mainStore = useMainStore()
 
 interface Props {
   word: string
@@ -13,38 +16,9 @@ const props = withDefaults(defineProps<Props>(), {
   result: false
 })
 
-type AnswerKanjiKey = 'kanji' | 'seichou' | 'seibo' | 'inbo'
+const answer = computed(() => mainStore.parsedAnswer)
 
-type AnswerKanji = Pick<KanjiBoxProps, AnswerKanjiKey>
-
-const answer = computed<[AnswerKanji, AnswerKanji, AnswerKanji, AnswerKanji]>(() => {
-  return [
-    {
-      kanji: '本',
-      seibo: 'b',
-      inbo: 'en',
-      seichou: 3
-    },
-    {
-      kanji: '性',
-      seibo: 'x',
-      inbo: 'ing',
-      seichou: 4
-    },
-    {
-      kanji: '难',
-      seibo: 'n',
-      inbo: 'an',
-      seichou: 2
-    },
-    {
-      kanji: '移',
-      seibo: 'y',
-      inbo: 'i',
-      seichou: 2
-    }
-  ]
-})
+console.log(mainStore.answerWord)
 
 const data = computed<KanjiBoxProps[]>(() => {
   if (!props.word) {
@@ -186,9 +160,9 @@ const data = computed<KanjiBoxProps[]>(() => {
 <style lang="scss" scoped>
 
 .word-line {
-  margin: 16rpx 0;
+  margin: 18rpx 0;
   .kanji:not(:first-child) {
-    margin-left: 16rpx;
+    margin-left: 18rpx;
   }
 }
 

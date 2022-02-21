@@ -11,15 +11,25 @@ import { useMainStore } from '../../store/index'
 import AnswerInput from '../../components/AnswerInput.vue'
 import WordLine from '../../components/WordLine.vue'
 import { answerList } from '../../composables/storage'
+import { onLoad } from '@dcloudio/uni-app'
+import { MAX_TRIES } from '../../utils/constants'
 
 const mainStore = useMainStore()
+
+onLoad(() => {
+  if (answerList.value.length >= MAX_TRIES) {
+    answerList.value = []
+  }
+})
+
 </script>
 
 <template>
   <view class="content">
     <view>
       <AnswerInput />
-      <WordLine :word="mainStore.$state.answerInput" :result="false" />
+      <WordLine v-if="!mainStore.gameOver" :word="mainStore.$state.answerInput" :result="false" />
+      <text class="the-answer" v-else>正确答案：{{mainStore.answerWord}}</text>
     </view>
     <view class="answers">
       <WordLine v-for="(line, index) in answerList" :key="line + index" :word="line" result />
@@ -35,6 +45,13 @@ const mainStore = useMainStore()
   flex-direction: column;
   justify-content: center;
   align-items: stretch;
+
+  .the-answer {
+    display: block;
+    text-align: center;
+    font-size: 32rpx;
+    color: #1d9c9c;
+  }
 
   .answers {
     flex: 1;
