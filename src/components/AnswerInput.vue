@@ -2,14 +2,7 @@
 import { computed } from 'vue'
 import { useMainStore } from '../store/index'
 import { answerList } from '../composables/storage'
-import { onReady } from '@dcloudio/uni-app'
-import pinyin from 'pinyin'
-
-onReady(() => {
-  console.log(pinyin('测试一下', {
-    style: pinyin.STYLE_TONE2
-  }))
-})
+// import { onReady } from '@dcloudio/uni-app'
 
 const mainStore = useMainStore()
 
@@ -26,7 +19,8 @@ const setAnswerInput = (e: Event) => {
 }
 
 const go = () => {
-  answerList.value.push(answerInput.value)
+  answerList.value.unshift(answerInput.value)
+  mainStore.setAnswerInput('')
 }
 </script>
 

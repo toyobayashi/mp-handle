@@ -1,9 +1,5 @@
 <script lang="ts">
-import AnswerInput from '../../components/AnswerInput.vue'
 export default {
-  components: {
-    AnswerInput
-  },
   onShareAppMessage () {
     return {}
   }
@@ -12,38 +8,37 @@ export default {
 
 <script setup lang="ts">
 import { useMainStore } from '../../store/index'
+import AnswerInput from '../../components/AnswerInput.vue'
+import WordLine from '../../components/WordLine.vue'
+import { answerList } from '../../composables/storage'
 
 const mainStore = useMainStore()
 </script>
 
 <template>
   <view class="content">
-    <AnswerInput />
-    <view>{{mainStore.$state.answerInput}}</view>
+    <view>
+      <AnswerInput />
+      <WordLine :word="mainStore.$state.answerInput" :result="false" />
+    </view>
+    <view class="answers">
+      <WordLine v-for="(line, index) in answerList" :key="line + index" :word="line" result />
+    </view>
   </view>
 </template>
 
 <style lang="scss" scoped>
 .content {
   padding: 16rpx;
+  display: flex;
+  height: calc(100vh - 32rpx);
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
 
-  .logo {
-    height: 200rpx;
-    width: 200rpx;
-    margin-top: 200rpx;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 50rpx;
-  }
-
-  .text-area {
-    display: flex;
-    justify-content: center;
-  }
-
-  .title {
-    font-size: 36rpx;
-    color: $uni-color-success;
+  .answers {
+    flex: 1;
+    overflow: auto;
   }
 }
 </style>
