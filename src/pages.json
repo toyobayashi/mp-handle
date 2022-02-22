@@ -11,6 +11,12 @@
 			"style": {
 				"navigationBarTitleText": "游戏规则"
 			}
+		},
+		{
+			"path": "pages/tip/tip",
+			"style": {
+				"navigationBarTitleText": "提示"
+			}
 		}
 	],
 	"globalStyle": {

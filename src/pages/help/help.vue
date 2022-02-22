@@ -7,6 +7,11 @@ export default {
       title: '汉兜猜词',
       path: '/pages/index/index'
     }
+  },
+  onShareTimeline () {
+    return {
+      title: '汉兜猜词'
+    }
   }
 }
 </script>

@@ -5,6 +5,11 @@ export default {
       title: '汉兜猜词',
       path: '/pages/index/index'
     }
+  },
+  onShareTimeline () {
+    return {
+      title: '汉兜猜词'
+    }
   }
 }
 </script>
@@ -74,7 +79,6 @@ const showAnswer = () => {
   display: flex;
   height: calc(100vh - 32rpx);
   flex-direction: column;
-  justify-content: center;
   align-items: stretch;
 
   .the-answer {

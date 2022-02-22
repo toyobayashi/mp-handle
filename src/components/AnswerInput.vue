@@ -63,6 +63,12 @@ const navigateToHelp = () => {
     url: '/pages/help/help'
   })
 }
+
+const navigateHint = () => {
+  uni.navigateTo({
+    url: '/pages/tip/tip'
+  })
+}
 </script>
 
 <template>
@@ -70,7 +76,7 @@ const navigateToHelp = () => {
 <view class="answer-input">
   <view class="btngrp">
     <view class="icon help" @click="navigateToHelp"></view>
-    <view class="icon tip"></view>
+    <view class="icon tip" @click="navigateHint"></view>
   </view>
   <input
     class="answer"

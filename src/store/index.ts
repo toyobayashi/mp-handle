@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { answerList } from '../composables/storage'
 import ANSWERS from '../utils/answers'
 import { MAX_TRIES } from '../utils/constants'
-import { parseAnswer } from '../utils/pinyin'
+import { parseAnswer, ParsedChar } from '../utils/pinyin'
 
 export const useMainStore = defineStore('main', {
   state: () => {
@@ -20,6 +20,15 @@ export const useMainStore = defineStore('main', {
     },
     parsedAnswer (state) {
       return parseAnswer(state.answer[0])
+    },
+    hintChar (): ParsedChar {
+      let index: number
+      if (this.answer[1]) {
+        index = this.answer[0].indexOf(this.answer[1])
+      } else {
+        index = Math.floor(Math.random() * this.parsedAnswer.length)
+      }
+      return this.parsedAnswer[index]
     }
   },
   actions: {
