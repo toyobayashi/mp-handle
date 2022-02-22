@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 
 export interface Props {
-  result: boolean
+  result?: boolean
   kanji: string
   kanjiStatus: 0 | 1 | 2
   seichou: 0 | 1 | 2 | 3 | 4
@@ -46,9 +46,11 @@ const kanjiClass = useStatusClass('kanjiStatus')
 </template>
 
 <style lang="scss" scoped>
+@use "../config";
+
 .kanji-box {
-  border: 4rpx solid #F0F1F2;
-  padding: 0 0 8rpx 0;
+  border: 4rpx solid config.$theme-border;
+  padding: 0 0 24rpx 0;
   display: inline-flex;
   width: 166rpx;
   height: 166rpx;
@@ -60,28 +62,28 @@ const kanjiClass = useStatusClass('kanjiStatus')
 
   &.ok {
     color: #fff !important;
-    background-color: #1d9c9c;
-    border: 4rpx solid #1d9c9c;
+    background-color: config.$theme-matched;
+    border: 4rpx solid config.$theme-matched;
   }
 
   &.no {
-    background-color: #F0F1F2;
+    background-color: config.$theme-border;
     .yes {
-      color: #1d9c9c;
+      color: config.$theme-matched;
     }
 
     .mis {
-      color: #de7525;
+      color: config.$theme-orange;
     }
 
     .err {
-      color: rgb(55,65,81);
-      opacity: 0.4;
+      @include config.unmatched;
     }
   }
 
   .pinyin {
     font-size: 26rpx;
+    line-height: 52rpx;
 
     .seibo {
       display: inline-block;

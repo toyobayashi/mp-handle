@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import KanjiBox from './KanjiBox.vue'
-import { parsePinyin, getPinyin } from '../utils/pinyin'
+import { parsePinyin, getPinyin, parseAnswer } from '../utils/pinyin'
 import type { Props as KanjiBoxProps } from './KanjiBox.vue'
 import { useMainStore } from '../store'
 
@@ -10,15 +10,21 @@ const mainStore = useMainStore()
 interface Props {
   word: string
   result: boolean
+  answer?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  result: false
+  result: false,
+  answer: ''
 })
 
-const answer = computed(() => mainStore.parsedAnswer)
-
-console.log(mainStore.answerWord)
+const answer = computed(() => {
+  if (props.answer) {
+    return parseAnswer(props.answer)
+  }
+  console.log(mainStore.answerWord)
+  return mainStore.parsedAnswer
+})
 
 const data = computed<KanjiBoxProps[]>(() => {
   if (!props.word) {
@@ -29,18 +35,7 @@ const data = computed<KanjiBoxProps[]>(() => {
   const pinyinArr = word
     ? getPinyin(word).map(parsePinyin)
     : []
-  
-  const hit = props.result
-    ? ([undefined, undefined, undefined, undefined]).map(() => {
-        return {
-          kanjiHit: -1,
-          seichouHit: -1,
-          seiboHit: -1,
-          inboHit: -1
-        }
-      })
-    : undefined!
-  
+
   const res = word ? word.split('').map<KanjiBoxProps>((kanji, index) => {
     const [seibo, inbo, seichou] = pinyinArr[index]
     return {
@@ -77,12 +72,16 @@ const data = computed<KanjiBoxProps[]>(() => {
     const keyStatus = key + 'Status'
     if (realIndex >= 0) {
       if (inputIndex === realIndex) {
-        res[inputIndex][keyStatus] = 2
+        res[inputIndex][keyStatus] = 2;
+        (unmatched as any)[key][realIndex] = undefined!
+      } else if ((unmatched as any)[key][inputIndex] === res[inputIndex][key]) {
+        res[inputIndex][keyStatus] = 2;
+        (unmatched as any)[key][inputIndex] = undefined!
       } else {
         res[inputIndex][keyStatus] = 1;
-        (misplaced as any)[key][inputIndex] = [res[inputIndex][key], realIndex, inputIndex]
+        (misplaced as any)[key][inputIndex] = [res[inputIndex][key], realIndex, inputIndex];
+        (unmatched as any)[key][realIndex] = undefined!
       }
-      (unmatched as any)[key][realIndex] = undefined!
     } else {
       const obj = (misplaced as any)[key].find((item: any) => item && item[0] === res[inputIndex][key])
       if (obj) {

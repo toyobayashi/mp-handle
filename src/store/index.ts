@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { answerList } from '../composables/storage'
 import ANSWERS from '../utils/answers'
 import { MAX_TRIES } from '../utils/constants'
-import { getPinyin, parsePinyin } from '../utils/pinyin'
+import { parseAnswer } from '../utils/pinyin'
 
 export const useMainStore = defineStore('main', {
   state: () => {
@@ -19,14 +19,7 @@ export const useMainStore = defineStore('main', {
       return state.answer[0]
     },
     parsedAnswer (state) {
-      return getPinyin(state.answer[0]).map(parsePinyin).map(([seibo, inbo, seichou], index) => {
-        return {
-          kanji: state.answer[0].charAt(index),
-          seibo,
-          inbo,
-          seichou
-        }
-      })
+      return parseAnswer(state.answer[0])
     }
   },
   actions: {

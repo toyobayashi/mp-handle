@@ -1,1 +1,9 @@
 $theme-color: #0d828e;
+$theme-orange: #de7525;
+$theme-matched: #1d9c9c;
+$theme-border: #F0F1F2;
+
+@mixin unmatched {
+  color: rgb(55,65,81);
+  opacity: 0.4;
+}

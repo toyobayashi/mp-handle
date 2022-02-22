@@ -1,7 +1,10 @@
 <script lang="ts">
 export default {
   onShareAppMessage () {
-    return {}
+    return {
+      title: '汉兜猜词',
+      path: '/pages/index/index'
+    }
   }
 }
 </script>
@@ -38,6 +41,8 @@ onLoad(() => {
 </template>
 
 <style lang="scss" scoped>
+@use '../../config';
+
 .content {
   padding: 16rpx;
   display: flex;
@@ -50,7 +55,7 @@ onLoad(() => {
     display: block;
     text-align: center;
     font-size: 32rpx;
-    color: #1d9c9c;
+    color: config.$theme-matched;
   }
 
   .answers {

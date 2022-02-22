@@ -31,3 +31,21 @@ export function getPinyin (word: string): string[] {
     return data[1].split(/\s+/g)
   return pinyin(word, { style: pinyin.STYLE_TONE2 }).map(i => i[0])
 }
+
+export interface ParsedAnswer {
+  kanji: string;
+  seibo: string;
+  inbo: string;
+  seichou: 0 | 1 | 2 | 3 | 4;
+}
+
+export function parseAnswer (word: string): ParsedAnswer[] {
+  return getPinyin(word).map(parsePinyin).map(([seibo, inbo, seichou], index) => {
+    return {
+      kanji: word.charAt(index),
+      seibo,
+      inbo,
+      seichou
+    }
+  })
+}
