@@ -21,6 +21,7 @@ const setAnswerInput = (e: Event) => {
 }
 
 const restart = () => {
+  mainStore.setAnswerInput('')
   answerList.value = []
   mainStore.resetAnswer()
 }
@@ -87,9 +88,11 @@ const navigateHint = () => {
   </view>
   <input
     class="answer"
+    :class="{ disabled: mainStore.gameOver }"
     type="text"
-    placeholder="输入四字词语..."
+    :placeholder="mainStore.gameOver ? '' : '输入四字词语...'"
     :value="answerInput"
+    :disabled="mainStore.gameOver"
     @input="setAnswerInput" />
   <GameButton v-if="!mainStore.gameOver" class="confirm" :disabled="btnDisabled" @click="go">确定</GameButton>
   <GameButton v-else class="confirm" @click="restart">再猜一次</GameButton>
@@ -134,6 +137,9 @@ const navigateHint = () => {
     border: 4rpx solid config.$theme-border;
     flex: 1;
     padding: 8rpx 16rpx;
+    &.disabled {
+      background-color: config.$theme-border;
+    }
   }
   .confirm {
     margin-left: 16rpx;

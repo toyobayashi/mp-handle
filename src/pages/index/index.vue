@@ -44,6 +44,7 @@ const showAnswer = () => {
     cancelText: '再想想',
     success: (res) => {
       if (res.confirm) {
+        mainStore.setAnswerInput('')
         answerList.value.unshift(mainStore.answerWord)
       }
     }
