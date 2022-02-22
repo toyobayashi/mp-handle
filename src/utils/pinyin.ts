@@ -32,20 +32,54 @@ export function getPinyin (word: string): string[] {
   return pinyin(word, { style: pinyin.STYLE_TONE2 }).map(i => i[0])
 }
 
-export interface ParsedAnswer {
+export interface ParsedChar {
   kanji: string;
   seibo: string;
   inbo: string;
   seichou: 0 | 1 | 2 | 3 | 4;
 }
 
-export function parseAnswer (word: string): ParsedAnswer[] {
+export function parseAnswer (word: string): ParsedChar[] {
   return getPinyin(word).map(parsePinyin).map(([seibo, inbo, seichou], index) => {
     return {
       kanji: word.charAt(index),
       seibo,
       inbo,
       seichou
+    }
+  })
+}
+
+export interface MatchResult {
+  kanji: 0 | 1 | 2
+  seibo: 0 | 1 | 2
+  inbo: 0 | 1 | 2
+  seichou: 0 | 1 | 2
+}
+
+function includesAndRemove<T>(arr: T[], v: T) {
+  const index = arr.indexOf(v)
+  if (index !== -1) {
+    arr.splice(index, 1)
+    return true
+  }
+  return false
+}
+
+export function testAnswer (input: ParsedChar[], expect: ParsedChar[]): MatchResult[] {
+  const unmatched = {
+    kanji: expect.map((a, i) => a.kanji === input[i].kanji ? undefined : a.kanji),
+    seichou: expect.map((a, i) => a.seichou === input[i].seichou ? undefined : a.seichou),
+    seibo: expect.map((a, i) => a.seibo === input[i].seibo ? undefined : a.seibo),
+    inbo: expect.map((a, i) => a.inbo === input[i].inbo ? undefined : a.inbo),
+  }
+
+  return input.map<MatchResult>((i, n) => {
+    return {
+      kanji: expect[n].kanji === i.kanji ? 2 : includesAndRemove(unmatched.kanji, i.kanji) ? 1 : 0,
+      seibo: expect[n].seibo === i.seibo ? 2 : includesAndRemove(unmatched.seibo, i.seibo) ? 1 : 0,
+      inbo: expect[n].inbo === i.inbo ? 2 : includesAndRemove(unmatched.inbo, i.inbo) ? 1 : 0,
+      seichou: expect[n].seichou === i.seichou ? 2 : includesAndRemove(unmatched.seichou, i.seichou) ? 1 : 0
     }
   })
 }

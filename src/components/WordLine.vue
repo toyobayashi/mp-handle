@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import KanjiBox from './KanjiBox.vue'
-import { parsePinyin, getPinyin, parseAnswer } from '../utils/pinyin'
+import { parsePinyin, getPinyin, parseAnswer, testAnswer } from '../utils/pinyin'
 import type { Props as KanjiBoxProps } from './KanjiBox.vue'
 import { useMainStore } from '../store'
 
@@ -52,58 +52,16 @@ const data = computed<KanjiBoxProps[]>(() => {
 
   if (!props.result) return res
 
-  const unmatched = {
-    kanji: answer.value.map(a => a.kanji),
-    seichou: answer.value.map(a => a.seichou),
-    seibo: answer.value.map(a => a.seibo),
-    inbo: answer.value.map(a => a.inbo),
-  }
-
-  const misplaced = {
-    kanji: [] as [string, number, number][],
-    seichou: [] as [number, number, number][],
-    seibo: [] as [string, number, number][],
-    inbo: [] as [string, number, number][]
-  }
-  
-  const check = (res: any, inputIndex: number, key: any) => {
-    const realIndex = (unmatched as any)[key].indexOf(res[inputIndex][key])
-    const keyStatus = key + 'Status'
-    if (realIndex >= 0) {
-      if (inputIndex === realIndex) {
-        res[inputIndex][keyStatus] = 2;
-        (unmatched as any)[key][realIndex] = undefined!
-      } else if ((unmatched as any)[key][inputIndex] === res[inputIndex][key]) {
-        res[inputIndex][keyStatus] = 2;
-        (unmatched as any)[key][inputIndex] = undefined!
-      } else {
-        res[inputIndex][keyStatus] = 1;
-        (misplaced as any)[key][inputIndex] = [res[inputIndex][key], realIndex, inputIndex];
-        (unmatched as any)[key][realIndex] = undefined!
-      }
-    } else {
-      const obj = (misplaced as any)[key].find((item: any) => item && item[0] === res[inputIndex][key])
-      if (obj) {
-        const [v, correctIndex, mismatchedIndex] = obj
-        if (inputIndex === correctIndex) {
-          res[mismatchedIndex][keyStatus] = 0;
-          res[inputIndex][keyStatus] = 2;
-          (misplaced as any)[key][mismatchedIndex] = undefined!
-        }
-      }
-    }
-  }
-
-  for (let i = 0; i < res.length; ++i) {
-    check(res, i, 'kanji')
-    check(res, i, 'seichou')
-    check(res, i, 'seibo')
-    check(res, i, 'inbo')
+  const result = testAnswer(res, answer.value)
+  for (let i = 0; i < result.length; ++i) {
+    res[i].kanjiStatus = result[i].kanji
+    res[i].seichouStatus = result[i].seichou
+    res[i].seiboStatus = result[i].seibo
+    res[i].inboStatus = result[i].inbo
   }
 
   return res
 })
-
 </script>
 
 <template>
