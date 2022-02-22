@@ -30,7 +30,9 @@ const backHome = () => {
 <template>
   <view class="help">
     <view class="title">汉兜猜词</view>
-    <view class="subtitle">汉字 Wordle 小程序，当前版本 v1.0.0</view>
+    <view class="subtitle">汉字版 Wordle 成语猜词小程序</view>
+    <view class="subtitle">v1.0.0</view>
+    <view class="subtitle">https://github.com/toyobayashi/mp-handle</view>
     <view class="subtitle2">游戏规则</view>
     <view class="p">你有十次的机会猜一个 <text class="ok">四字词语</text></view>
     <view class="p">每次猜测后，汉字与拼音的颜色将会标识其与正确答案的区别。</view>
