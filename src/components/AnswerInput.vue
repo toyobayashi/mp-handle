@@ -65,6 +65,13 @@ const navigateToHelp = () => {
 }
 
 const navigateHint = () => {
+  if (mainStore.gameOver) {
+    uni.showToast({
+      title: '游戏已结束，重新开始后即可查看提示',
+      icon: 'none'
+    })
+    return
+  }
   uni.navigateTo({
     url: '/pages/tip/tip'
   })
