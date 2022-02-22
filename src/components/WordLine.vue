@@ -22,7 +22,6 @@ const answer = computed(() => {
   if (props.answer) {
     return parseAnswer(props.answer)
   }
-  console.log(mainStore.answerWord)
   return mainStore.parsedAnswer
 })
 
