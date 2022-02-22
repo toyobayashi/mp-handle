@@ -32,4 +32,5 @@ export function useStorage<T = any> (key: string, defaultValue?: MaybeRef<T>): R
   return data
 }
 
-export const answerList = useStorage<string[]>('hd_answer_list', [])
+// export const answerList = useStorage<string[]>('hd_answer_list', [])
+export const answerList = ref<string[]>([])
