@@ -29,7 +29,7 @@ onLoad(() => {
   if (answerList.value.length >= MAX_TRIES) {
     answerList.value = []
   }
-  console.log(mainStore.answerWord)
+  // console.log(mainStore.answerWord)
 })
 
 const leftChance = computed(() => {
