@@ -55,6 +55,7 @@ const versionName = ref(__VERSION__)
       <WordLine word="武运昌隆" result answer="武运昌隆" />
     </view>
     <view class="p">当四个格子都为青色时，你便赢得了游戏！</view>
+    <view class="p">如果您想要添加更多成语答案，可以访问本页顶部的代码仓库地址，打开新的 Issue 或 Pull request。期待您的贡献。</view>
     <GameButton class="backhome" @click="backHome">返回游戏</GameButton>
   </view>
 </template>
