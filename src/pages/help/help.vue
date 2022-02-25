@@ -19,19 +19,22 @@ export default {
 <script setup lang="ts">
 import WordLine from '../../components/WordLine.vue'
 import GameButton from '../../components/GameButton.vue'
+import { ref } from 'vue'
 
 const backHome = () => {
   uni.navigateBack({
     delta: 1
   })
 }
+
+const versionName = ref(__VERSION__)
 </script>
 
 <template>
   <view class="help">
     <view class="title">汉兜猜词</view>
     <view class="subtitle">汉字版 Wordle 成语猜词小程序</view>
-    <view class="subtitle">v1.0.0</view>
+    <view class="subtitle">v{{versionName}}</view>
     <view class="subtitle">https://github.com/toyobayashi/mp-handle</view>
     <view class="subtitle2">游戏规则</view>
     <view class="p">你有十次的机会猜一个 <text class="ok">四字词语</text></view>
