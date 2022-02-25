@@ -17,6 +17,12 @@
 			"style": {
 				"navigationBarTitleText": "提示"
 			}
+		},
+		{
+			"path": "pages/score/score",
+			"style": {
+				"navigationBarTitleText": "记分板"
+			}
 		}
 	],
 	"globalStyle": {

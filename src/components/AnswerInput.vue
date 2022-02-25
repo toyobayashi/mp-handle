@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useMainStore } from '../store/index'
-import { answerList } from '../composables/storage'
-import { MAX_TRIES } from '../utils/constants'
 import GameButton from './GameButton.vue'
 // import { onReady } from '@dcloudio/uni-app'
 
@@ -21,15 +19,12 @@ const setAnswerInput = (e: Event) => {
 }
 
 const restart = () => {
-  mainStore.setAnswerInput('')
-  answerList.value = []
-  mainStore.resetAnswer()
+  mainStore.startGame()
 }
 
 const go = () => {
-  answerList.value.unshift(answerInput.value)
-  mainStore.setAnswerInput('')
-  if (answerList.value[0] === mainStore.answerWord) {
+  const result = mainStore.confirmAnswer()
+  if (result === 1) {
     uni.showModal({
       title: '提示',
       content: '恭喜你答对了！',
@@ -44,7 +39,7 @@ const go = () => {
     return
   }
 
-  if (answerList.value.length >= MAX_TRIES) {
+  if (result === -1) {
     uni.showModal({
       title: '提示',
       content: `很遗憾没答对，答案是${mainStore.answerWord}`,
@@ -73,8 +68,17 @@ const navigateHint = () => {
     })
     return
   }
+  if (mainStore.currentTry) {
+    mainStore.currentTry.hint = true
+  }
   uni.navigateTo({
     url: '/pages/tip/tip'
+  })
+}
+
+const navigateToScore = () => {
+  uni.navigateTo({
+    url: '/pages/score/score'
   })
 }
 </script>
@@ -85,6 +89,7 @@ const navigateHint = () => {
   <view class="btngrp">
     <view class="icon help" @click="navigateToHelp"></view>
     <view class="icon tip" @click="navigateHint"></view>
+    <view class="icon score" @click="navigateToScore"></view>
   </view>
   <input
     class="answer"
@@ -128,6 +133,13 @@ const navigateHint = () => {
       mask: var(--tip-icon) no-repeat;
       mask-size: 100% 100%;
       -webkit-mask: var(--tip-icon) no-repeat;
+      -webkit-mask-size: 100% 100%;
+    }
+    .score {
+      --score-icon: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1.2em' height='1.2em' preserveAspectRatio='xMidYMid meet' viewBox='0 0 32 32'%3E%3Cpath d='M26 2H8a2 2 0 0 0-2 2v4H4v2h2v5H4v2h2v5H4v2h2v4a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zm0 26H8v-4h2v-2H8v-5h2v-2H8v-5h2V8H8V4h18z' fill='currentColor'/%3E%3Cpath d='M14 8h8v2h-8z' fill='currentColor'/%3E%3Cpath d='M14 15h8v2h-8z' fill='currentColor'/%3E%3Cpath d='M14 22h8v2h-8z' fill='currentColor'/%3E%3C/svg%3E");
+      mask: var(--score-icon) no-repeat;
+      mask-size: 100% 100%;
+      -webkit-mask: var(--score-icon) no-repeat;
       -webkit-mask-size: 100% 100%;
     }
   }

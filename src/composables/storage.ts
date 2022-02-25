@@ -34,3 +34,13 @@ export function useStorage<T = any> (key: string, defaultValue?: MaybeRef<T>): R
 
 // export const answerList = useStorage<string[]>('hd_answer_list', [])
 export const answerList = ref<string[]>([])
+
+export interface Try {
+  tries: number
+  start: number
+  end?: number
+  hint?: boolean
+  passed?: boolean
+}
+
+export const tries = useStorage<Try[]>('hd_tries', [])

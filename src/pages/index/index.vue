@@ -19,7 +19,7 @@ import { useMainStore } from '../../store/index'
 import AnswerInput from '../../components/AnswerInput.vue'
 import WordLine from '../../components/WordLine.vue'
 import { answerList } from '../../composables/storage'
-import { onLoad } from '@dcloudio/uni-app'
+import { onLoad, onReady } from '@dcloudio/uni-app'
 import { MAX_TRIES } from '../../utils/constants'
 import { computed } from 'vue'
 
@@ -29,7 +29,10 @@ onLoad(() => {
   if (answerList.value.length >= MAX_TRIES) {
     answerList.value = []
   }
-  // console.log(mainStore.answerWord)
+})
+
+onReady(() => {
+  mainStore.startGame()
 })
 
 const leftChance = computed(() => {
@@ -46,6 +49,10 @@ const showAnswer = () => {
       if (res.confirm) {
         mainStore.setAnswerInput('')
         answerList.value.unshift(mainStore.answerWord)
+        if (mainStore.currentTry) {
+          mainStore.currentTry.end = Date.now()
+          mainStore.currentTry.passed = false
+        }
       }
     }
   })
