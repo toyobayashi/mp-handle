@@ -22,17 +22,26 @@ import { answerList } from '../../composables/storage'
 import { onLoad, onReady } from '@dcloudio/uni-app'
 import { MAX_TRIES } from '../../utils/constants'
 import { computed } from 'vue'
+import { checkUpdate } from '../../utils/update'
 
 const mainStore = useMainStore()
 
 onLoad(() => {
-  if (answerList.value.length >= MAX_TRIES) {
-    answerList.value = []
-  }
+  // if (answerList.value.length >= MAX_TRIES) {
+  //   answerList.value = []
+  // }
 })
 
 onReady(() => {
-  mainStore.startGame()
+  uni.showModal({
+    title: '玩法提示',
+    content: '欢迎使用汉兜猜词小程序！\n\n首次输入任意四字词语，根据汉字和拼音提示，再进一步猜出正确答案\n\n具体规则点击左上方问号，查看提示点击左上方灯泡',
+    showCancel: false,
+    complete: () => {
+      mainStore.startGame()
+      checkUpdate()
+    }
+  })
 })
 
 const leftChance = computed(() => {
