@@ -35,7 +35,7 @@ const onClick = (e: Event) => {
   line-height: 90rpx;
   font-size: 32rpx;
   opacity: 0.9;
-  min-width: 200rpx;
+  min-width: 184rpx;
 
   &.disabled {
     background-color: rgb(75,85,99);

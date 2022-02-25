@@ -146,7 +146,7 @@ const navigateToScore = () => {
   .answer {
     height: 68rpx;
     line-height: 68rpx;
-    border: 4rpx solid config.$theme-border;
+    border: 6rpx solid config.$theme-border;
     flex: 1;
     padding: 8rpx 16rpx;
     &.disabled {

@@ -49,7 +49,7 @@ const kanjiClass = useStatusClass('kanjiStatus')
 @use "../config";
 
 .kanji-box {
-  border: 4rpx solid config.$theme-border;
+  border: 6rpx solid config.$theme-border;
   padding: 0 0 24rpx 0;
   display: inline-flex;
   width: 166rpx;
@@ -63,17 +63,19 @@ const kanjiClass = useStatusClass('kanjiStatus')
   &.ok {
     color: #fff !important;
     background-color: config.$theme-matched;
-    border: 4rpx solid config.$theme-matched;
+    border: 6rpx solid config.$theme-matched;
   }
 
   &.no {
     background-color: config.$theme-border;
     .yes {
       color: config.$theme-matched;
+      font-weight: bold;
     }
 
     .mis {
       color: config.$theme-orange;
+      font-weight: bold;
     }
 
     .err {
@@ -82,27 +84,28 @@ const kanjiClass = useStatusClass('kanjiStatus')
   }
 
   .pinyin {
-    font-size: 26rpx;
-    line-height: 52rpx;
+    font-size: 28rpx;
+    line-height: 54rpx;
+    margin-bottom: 8rpx;
 
     .seibo {
       display: inline-block;
-      height: 26rpx;
-      line-height: 26rpx;
+      height: 28rpx;
+      line-height: 28rpx;
     }
 
     .seichou {
       margin-left: 8rpx;
       display: inline-block;
-      height: 26rpx;
-      line-height: 26rpx;
+      height: 28rpx;
+      line-height: 28rpx;
     }
 
     .inbo {
       margin-left: 4rpx;
       display: inline-block;
-      height: 26rpx;
-      line-height: 26rpx;
+      height: 28rpx;
+      line-height: 28rpx;
     }
   }
 
