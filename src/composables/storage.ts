@@ -44,3 +44,4 @@ export interface Try {
 }
 
 export const tries = useStorage<Try[]>('hd_tries', [])
+export const firstVisit = useStorage<boolean>('hd_first_visit', true)

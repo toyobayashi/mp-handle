@@ -9,7 +9,8 @@ export const useMainStore = defineStore('main', {
   state: () => {
     return {
       answerInput: '',
-      answer: ANSWERS[Math.floor(Math.random() * ANSWERS.length)]
+      answer: ANSWERS[Math.floor(Math.random() * ANSWERS.length)],
+      sharedAnswer: null as [string, string] | null
     }
   },
   getters: {
@@ -39,7 +40,11 @@ export const useMainStore = defineStore('main', {
     setAnswerInput (value: string) {
       this.answerInput = value
     },
-    resetAnswer () {
+    resetAnswer (answer?: [string, string]) {
+      if (answer) {
+        this.answer = answer
+        return
+      }
       const index = ANSWERS.indexOf(this.answer)
       let newIndex: number
       do {
@@ -47,10 +52,10 @@ export const useMainStore = defineStore('main', {
       } while (newIndex === index)
       this.answer = ANSWERS[newIndex]
     },
-    startGame () {
+    startGame (answer?: [string, string]) {
       this.setAnswerInput('')
       answerList.value = []
-      this.resetAnswer()
+      this.resetAnswer(answer)
       if (PLATFORM === 'devtools') {
         console.log(this.answerWord)
       }

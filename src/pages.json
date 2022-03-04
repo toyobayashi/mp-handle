@@ -23,6 +23,12 @@
 			"style": {
 				"navigationBarTitleText": "记分板"
 			}
+		},
+		{
+			"path": "pages/share/share",
+			"style": {
+				"navigationBarTitleText": "给好友出题"
+			}
 		}
 	],
 	"globalStyle": {

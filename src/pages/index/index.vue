@@ -18,7 +18,7 @@ export default {
 import { useMainStore } from '../../store/index'
 import AnswerInput from '../../components/AnswerInput.vue'
 import WordLine from '../../components/WordLine.vue'
-import { answerList } from '../../composables/storage'
+import { answerList, firstVisit } from '../../composables/storage'
 import { onLoad, onReady } from '@dcloudio/uni-app'
 import { MAX_TRIES } from '../../utils/constants'
 import { computed } from 'vue'
@@ -26,22 +26,44 @@ import { checkUpdate } from '../../utils/update'
 
 const mainStore = useMainStore()
 
-onLoad(() => {
-  // if (answerList.value.length >= MAX_TRIES) {
-  //   answerList.value = []
-  // }
+onLoad((options) => {
+  if (options.answer) {
+    const answerFromQuery = options.answer
+    const word = answerFromQuery.substring(0, answerFromQuery.length - 1)
+    mainStore.sharedAnswer = [word, word.charAt(Number(answerFromQuery.charAt(answerFromQuery.length - 1)))]
+  }
 })
 
 onReady(() => {
-  uni.showModal({
-    title: '玩法提示',
-    content: '欢迎使用汉兜猜词小程序！\n\n首次输入任意四字词语，根据汉字和拼音提示，再进一步猜出正确答案\n\n具体规则点击左上方问号，查看提示点击左上方灯泡',
-    showCancel: false,
-    complete: () => {
+  const tip = '首次输入任意四字词语，根据汉字和拼音提示，再进一步猜出正确答案\n\n具体规则点击左上方问号，查看提示点击左上方灯泡'
+  if (mainStore.sharedAnswer) {
+    const sharedAnswer = mainStore.sharedAnswer
+    uni.showModal({
+      title: '提示',
+      content: '你的好友为你出了一道题。\n\n' + tip,
+      showCancel: false,
+      complete: () => {
+        mainStore.startGame(sharedAnswer)
+        checkUpdate()
+      }
+    })
+  } else {
+    if (firstVisit.value) {
+      firstVisit.value = false
+      uni.showModal({
+        title: '玩法提示',
+        content: '欢迎使用汉兜猜词小程序！\n\n' + tip,
+        showCancel: false,
+        complete: () => {
+          mainStore.startGame()
+          checkUpdate()
+        }
+      })
+    } else {
       mainStore.startGame()
       checkUpdate()
     }
-  })
+  }
 })
 
 const leftChance = computed(() => {
@@ -67,6 +89,12 @@ const showAnswer = () => {
   })
 }
 
+const shareQuestion = () => {
+  uni.navigateTo({
+    url: '/pages/share/share'
+  })
+}
+
 </script>
 
 <template>
@@ -76,6 +104,7 @@ const showAnswer = () => {
       <template v-if="!mainStore.gameOver">
         <view class="tipline">
           <text class="left-chance">剩余 {{leftChance}} 次机会</text>
+          <text class="show-answer" @click="shareQuestion">给好友出题</text>
           <text class="show-answer" @click="showAnswer">展示答案</text>
         </view>
         <WordLine :word="mainStore.$state.answerInput" :result="false" />

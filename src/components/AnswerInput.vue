@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useMainStore } from '../store/index'
+import { isFourCharWord } from '../utils/utils'
 import GameButton from './GameButton.vue'
 // import { onReady } from '@dcloudio/uni-app'
 
@@ -8,10 +9,8 @@ const mainStore = useMainStore()
 
 const answerInput = computed(() => mainStore.$state.answerInput)
 
-const _answerRegEx = /^[\u4e00-\u9fa5]{4}$/
-
 const btnDisabled = computed(() => {
-  return !_answerRegEx.test(mainStore.$state.answerInput)
+  return !isFourCharWord(mainStore.$state.answerInput)
 })
 
 const setAnswerInput = (e: Event) => {

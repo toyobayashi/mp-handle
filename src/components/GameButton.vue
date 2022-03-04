@@ -1,10 +1,12 @@
 <script setup lang="ts">
 interface Props {
   disabled?: boolean
+  openType?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  disabled: false
+  disabled: false,
+  openType: undefined
 })
 
 const emit = defineEmits<{
@@ -21,6 +23,7 @@ const onClick = (e: Event) => {
   :class="{ disabled: props.disabled }"
   class="game-button"
   :disabled="props.disabled"
+  :open-type="props.openType"
   @click="onClick"><slot></slot></button>
 </template>
 
