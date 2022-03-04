@@ -75,7 +75,7 @@ export default defineComponent({
     if (res.from === 'button') {
       const path = `/pages/index/index?answer=${answerInput.value + answerInput.value.indexOf(hintInput.value)}`
       return {
-        title: '汉兜猜词 - 好友邀请你猜一猜',
+        title: '好友出题给你猜一猜',
         path: path,
         imageUrl: '/static/mpcode_344.jpg'
       }
