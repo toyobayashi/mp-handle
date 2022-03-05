@@ -3,7 +3,10 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "汉兜猜词"
+				"navigationBarTitleText": "汉兜猜词",
+				"usingComponents": {
+					"custom-ad": "/wxcomponents/custom-ad/custom-ad"
+				}
 			}
 		},
 		{

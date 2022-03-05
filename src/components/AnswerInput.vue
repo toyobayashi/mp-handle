@@ -5,6 +5,11 @@ import { isFourCharWord } from '../utils/utils'
 import GameButton from './GameButton.vue'
 // import { onReady } from '@dcloudio/uni-app'
 
+const emit = defineEmits<{
+  (event: 'submit'): void
+  (event: 'restart'): void
+}>()
+
 const mainStore = useMainStore()
 
 const answerInput = computed(() => mainStore.$state.answerInput)
@@ -18,39 +23,11 @@ const setAnswerInput = (e: Event) => {
 }
 
 const restart = () => {
-  mainStore.startGame()
+  emit('restart')
 }
 
 const go = () => {
-  const result = mainStore.confirmAnswer()
-  if (result === 1) {
-    uni.showModal({
-      title: '提示',
-      content: '恭喜你答对了！',
-      confirmText: '再猜一次',
-      cancelText: '确定',
-      success: (res) => {
-        if (res.confirm) {
-          restart()
-        }
-      }
-    })
-    return
-  }
-
-  if (result === -1) {
-    uni.showModal({
-      title: '提示',
-      content: `很遗憾没答对，答案是${mainStore.answerWord}`,
-      confirmText: '再猜一次',
-      cancelText: '确定',
-      success: (res) => {
-        if (res.confirm) {
-          restart()
-        }
-      }
-    })
-  }
+  emit('submit')
 }
 
 const navigateToHelp = () => {

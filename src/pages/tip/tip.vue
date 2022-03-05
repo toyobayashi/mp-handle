@@ -94,30 +94,35 @@ const sheet = computed(() => {
 
 <template>
   <view class="tip-page">
-    <view class="tip">答案包含以下汉字</view>
-
-    <KanjiBox
-      class="kanji"
-      :kanji="moreTip ? hintChar.kanji : '?'"
-      :result="false"
-      :kanjiStatus="0"
-      :seichou="hintChar.seichou"
-      :seichouStatus="0"
-      :seibo="hintChar.seibo"
-      :seiboStatus="0"
-      :inbo="hintChar.inbo"
-      :inboStatus="0" />
-    
-    <GameButton class="tipbtn" v-if="!moreTip" @click="moreTip = true">进一步提示</GameButton>
-    <GameButton class="tipbtn" v-else @click="moreTip = false">遮挡</GameButton>
-
-    <view class="sheet">
-      <view class="seibo-sheet">
-        <view class="sheet-item" :class="{ mis: status === 1, ok: status === 2, no: status === 0 }" v-for="(status, seibo) in sheet.seiboMap" :key="seibo">{{seibo}}</view>
+    <view class="content">
+      <view class="tip">答案包含以下汉字</view>
+  
+      <KanjiBox
+        class="kanji"
+        :kanji="moreTip ? hintChar.kanji : '?'"
+        :result="false"
+        :kanjiStatus="0"
+        :seichou="hintChar.seichou"
+        :seichouStatus="0"
+        :seibo="hintChar.seibo"
+        :seiboStatus="0"
+        :inbo="hintChar.inbo"
+        :inboStatus="0" />
+      
+      <GameButton class="tipbtn" v-if="!moreTip" @click="moreTip = true">进一步提示</GameButton>
+      <GameButton class="tipbtn" v-else @click="moreTip = false">遮挡</GameButton>
+  
+      <view class="sheet">
+        <view class="seibo-sheet">
+          <view class="sheet-item" :class="{ mis: status === 1, ok: status === 2, no: status === 0 }" v-for="(status, seibo) in sheet.seiboMap" :key="seibo">{{seibo}}</view>
+        </view>
+        <view class="inbo-sheet">
+          <view class="sheet-item" :class="{ mis: status === 1, ok: status === 2, no: status === 0 }" v-for="(status, inbo) in sheet.inboMap" :key="inbo">{{inbo}}</view>
+        </view>
       </view>
-      <view class="inbo-sheet">
-        <view class="sheet-item" :class="{ mis: status === 1, ok: status === 2, no: status === 0 }" v-for="(status, inbo) in sheet.inboMap" :key="inbo">{{inbo}}</view>
-      </view>
+    </view>
+    <view class="ad-container">
+      <ad unit-id="adunit-838da8166c0d92b9"></ad>
     </view>
   </view>
 </template>
@@ -126,60 +131,70 @@ const sheet = computed(() => {
 @use '../../config';
 
 .tip-page {
-  padding: 16rpx;
   display: flex;
-  height: calc(100vh - 32rpx);
+  height: 100vh;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
 
-  .tip {
-    margin-bottom: 32rpx;
-  }
-
-  .tipbtn {
-    margin: 32rpx 0;
-  }
-
-  .sheet {
+  .content {
+    padding: 16rpx;
     display: flex;
-    width: 100%;
-    justify-content: space-between;
-    flex-direction: row;
-    align-items: flex-start;
-    .seibo-sheet {
-      flex: 1;
-      display: flex;
-      flex-wrap: wrap;
-    }
-    .inbo-sheet {
-      flex: 1;
-      display: flex;
-      flex-wrap: wrap;
-    }
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    overflow: auto;
+    flex: 1;
 
-    .sheet-item {
+    .tip {
+      margin-bottom: 32rpx;
+    }
+  
+    .tipbtn {
+      margin: 32rpx 0;
+    }
+  
+    .sheet {
       display: flex;
-      width: 50%;
-      height: 48rpx;
-      line-height: 48rpx;
-      justify-content: center;
-      align-items: center;
-      // min-height: 40rpx;
-      text-align: center;
-      flex-shrink: 0;
-      &.mis {
-        color: config.$theme-orange;
-        font-weight: bold;
+      width: 100%;
+      justify-content: space-between;
+      flex-direction: row;
+      align-items: flex-start;
+      .seibo-sheet {
+        flex: 1;
+        display: flex;
+        flex-wrap: wrap;
       }
-      &.ok {
-        color: config.$theme-matched;
-        font-weight: bold;
+      .inbo-sheet {
+        flex: 1;
+        display: flex;
+        flex-wrap: wrap;
       }
-      &.no {
-        opacity: 0.5;
-        color: rgb(55,65,81);
+  
+      .sheet-item {
+        display: flex;
+        width: 25%;
+        height: 48rpx;
+        line-height: 48rpx;
+        justify-content: center;
+        align-items: center;
+        // min-height: 40rpx;
+        text-align: center;
+        flex-shrink: 0;
+        &.mis {
+          color: config.$theme-orange;
+          font-weight: bold;
+        }
+        &.ok {
+          color: config.$theme-matched;
+          font-weight: bold;
+        }
+        &.no {
+          opacity: 0.5;
+          color: rgb(55,65,81);
+        }
       }
     }
   }
+
 }
 </style>

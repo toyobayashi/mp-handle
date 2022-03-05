@@ -95,24 +95,65 @@ const shareQuestion = () => {
   })
 }
 
+const restart = () => {
+  mainStore.startGame()
+}
+
+const go = () => {
+  const result = mainStore.confirmAnswer()
+  if (result === 1) {
+    uni.showModal({
+      title: '提示',
+      content: '恭喜你答对了！',
+      confirmText: '再猜一次',
+      cancelText: '确定',
+      success: (res) => {
+        if (res.confirm) {
+          restart()
+        }
+      }
+    })
+    return
+  }
+
+  if (result === -1) {
+    uni.showModal({
+      title: '提示',
+      content: `很遗憾没答对，答案是${mainStore.answerWord}`,
+      confirmText: '再猜一次',
+      cancelText: '确定',
+      success: (res) => {
+        if (res.confirm) {
+          restart()
+        }
+      }
+    })
+  }
+}
+
 </script>
 
 <template>
-  <view class="content">
-    <view>
-      <AnswerInput />
-      <template v-if="!mainStore.gameOver">
-        <view class="tipline">
-          <text class="left-chance">剩余 {{leftChance}} 次机会</text>
-          <text class="show-answer" @click="shareQuestion">给好友出题</text>
-          <text class="show-answer" @click="showAnswer">展示答案</text>
-        </view>
-        <WordLine :word="mainStore.$state.answerInput" :result="false" />
-      </template>
-      <text class="the-answer" v-else>正确答案：{{mainStore.answerWord}}</text>
+  <view class="index-page">
+    <view class="content">
+      <view>
+        <AnswerInput @restart="restart" @submit="go" />
+        <template v-if="!mainStore.gameOver">
+          <view class="tipline">
+            <text class="left-chance">剩余 {{leftChance}} 次机会</text>
+            <text class="show-answer" @click="shareQuestion">给好友出题</text>
+            <text class="show-answer" @click="showAnswer">展示答案</text>
+          </view>
+          <WordLine :word="mainStore.$state.answerInput" :result="false" />
+        </template>
+        <text class="the-answer" v-else>正确答案：{{mainStore.answerWord}}</text>
+      </view>
+      <view class="answers">
+        <WordLine v-for="(line, index) in answerList" :key="line + index" :word="line" result />
+      </view>
     </view>
-    <view class="answers">
-      <WordLine v-for="(line, index) in answerList" :key="line + index" :word="line" result />
+    <view class="ad-container">
+      <ad unit-id="adunit-531b04844930193d"></ad>
     </view>
   </view>
 </template>
@@ -120,46 +161,56 @@ const shareQuestion = () => {
 <style lang="scss" scoped>
 @use '../../config';
 
-.content {
-  padding: 16rpx;
+.index-page {
   display: flex;
-  height: calc(100vh - 32rpx);
+  height: 100vh;
   flex-direction: column;
   align-items: stretch;
 
-  .the-answer {
-    display: block;
-    text-align: center;
-    font-size: 32rpx;
-    height: 60rpx;
-    line-height: 60rpx;
-    margin-top: 8rpx;
-    color: config.$theme-matched;
-  }
-
-  .answers {
-    flex: 1;
-    overflow: auto;
-  }
-
-  .tipline {
+  .content {
+    padding: 16rpx;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 8rpx;
+    height: calc(100vh - 32rpx);
+    flex-direction: column;
+    align-items: stretch;
+    overflow: auto;
+    flex: 1;
 
-    .left-chance {
-      opacity: 0.5;
-      color: rgb(55,65,81);
+    .the-answer {
+      display: block;
+      text-align: center;
+      font-size: 32rpx;
       height: 60rpx;
       line-height: 60rpx;
-    }
-    .show-answer {
-      text-decoration: underline;
+      margin-top: 8rpx;
       color: config.$theme-matched;
-      height: 60rpx;
-      line-height: 60rpx;
+    }
+
+    .answers {
+      flex: 1;
+      overflow: auto;
+    }
+
+    .tipline {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8rpx;
+
+      .left-chance {
+        opacity: 0.5;
+        color: rgb(55,65,81);
+        height: 60rpx;
+        line-height: 60rpx;
+      }
+      .show-answer {
+        text-decoration: underline;
+        color: config.$theme-matched;
+        height: 60rpx;
+        line-height: 60rpx;
+      }
     }
   }
 }
+
 </style>

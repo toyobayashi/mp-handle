@@ -87,36 +87,41 @@ const avrTime = computed(() => {
 
 <template>
   <view class="score-page">
-    <view class="title">记分板</view>
-
-    <view class="line">
-      <text class="label">游戏次数</text>
-      <text class="value">{{gameTimes}}</text>
+    <view class="content">
+      <view class="title">记分板</view>
+  
+      <view class="line">
+        <text class="label">游戏次数</text>
+        <text class="value">{{gameTimes}}</text>
+      </view>
+      <view class="line">
+        <text class="label">获胜次数</text>
+        <text class="value">{{winTimes}}</text>
+      </view>
+      <view class="line">
+        <text class="label">无提示获胜次数</text>
+        <text class="value">{{winTimesWithNoHint}}</text>
+      </view>
+      <view class="line">
+        <text class="label">获胜几率</text>
+        <text class="value">{{winRate}}%</text>
+      </view>
+      <view class="line">
+        <text class="label">平均尝试次数</text>
+        <text class="value">{{avrTries}}</text>
+      </view>
+      <view class="line">
+        <text class="label">平均用时</text>
+        <text class="value">{{avrTime}}</text>
+      </view>
+  
+      <view class="btngrp">
+        <GameButton class="btn" @click="clear">清空记录</GameButton>
+        <GameButton class="btn" @click="back">返回游戏</GameButton>
+      </view>
     </view>
-    <view class="line">
-      <text class="label">获胜次数</text>
-      <text class="value">{{winTimes}}</text>
-    </view>
-    <view class="line">
-      <text class="label">无提示获胜次数</text>
-      <text class="value">{{winTimesWithNoHint}}</text>
-    </view>
-    <view class="line">
-      <text class="label">获胜几率</text>
-      <text class="value">{{winRate}}%</text>
-    </view>
-    <view class="line">
-      <text class="label">平均尝试次数</text>
-      <text class="value">{{avrTries}}</text>
-    </view>
-    <view class="line">
-      <text class="label">平均用时</text>
-      <text class="value">{{avrTime}}</text>
-    </view>
-
-    <view class="btngrp">
-      <GameButton class="btn" @click="clear">清空记录</GameButton>
-      <GameButton class="btn" @click="back">返回游戏</GameButton>
+    <view class="ad-container">
+      <ad unit-id="adunit-fe7e15cce73e6dd3"></ad>
     </view>
   </view>
 </template>
@@ -125,43 +130,51 @@ const avrTime = computed(() => {
 @use '../../config';
 
 .score-page {
-  padding: 16rpx;
   display: flex;
-  height: calc(100vh - 32rpx);
+  height: 100vh;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
 
-  .title {
-    font-size: 40rpx;
-    font-weight: bold;
-    margin-bottom: 16rpx;
-  }
-  .line {
+  .content {
+    padding: 16rpx;
     display: flex;
-    justify-content: center;
+    height: 100%;
+    flex-direction: column;
     align-items: center;
-    margin: 16rpx 0;
-    width: 100%;
-
-    .label {
-      flex: 4;
-      text-align: right;
-      color: rgb(55,65,81);
-      opacity: 0.5;
+    overflow: auto;
+    flex: 1;
+    .title {
+      font-size: 40rpx;
+      font-weight: bold;
+      margin-bottom: 16rpx;
     }
-    .value {
-      flex: 3;
-      margin-left: 16rpx;
+    .line {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 16rpx 0;
+      width: 100%;
+  
+      .label {
+        flex: 4;
+        text-align: right;
+        color: rgb(55,65,81);
+        opacity: 0.5;
+      }
+      .value {
+        flex: 3;
+        margin-left: 16rpx;
+      }
     }
-  }
-
-  .btngrp {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 32rpx 0;
-    .btn {
-      margin: 0 16rpx;
+  
+    .btngrp {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 32rpx 0;
+      .btn {
+        margin: 0 16rpx;
+      }
     }
   }
 }

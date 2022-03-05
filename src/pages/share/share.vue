@@ -96,25 +96,30 @@ export default defineComponent({
 
 <template>
   <view class="share-page">
-    <view class="title">给好友出题</view>
-
-    <input
-      class="answer"
-      type="text"
-      placeholder="输入要分享的四字词语"
-      v-model="answerInput" />
-    
-    <input
-      class="answer"
-      type="text"
-      placeholder="输入要提示的汉字"
-      v-model="hintInput" />
-    
-    <view class="tip">{{validateShare.message}}</view>
-
-    <view class="btngrp">
-      <GameButton class="btn" :disabled="!validateShare.canShare" open-type="share">分享好友</GameButton>
-      <GameButton class="btn" @click="back">返回游戏</GameButton>
+    <view class="content">
+      <view class="title">给好友出题</view>
+  
+      <input
+        class="answer"
+        type="text"
+        placeholder="输入要分享的四字词语"
+        v-model="answerInput" />
+      
+      <input
+        class="answer"
+        type="text"
+        placeholder="输入要提示的汉字"
+        v-model="hintInput" />
+      
+      <view class="tip">{{validateShare.message}}</view>
+  
+      <view class="btngrp">
+        <GameButton class="btn" :disabled="!validateShare.canShare" open-type="share">分享好友</GameButton>
+        <GameButton class="btn" @click="back">返回游戏</GameButton>
+      </view>
+    </view>
+    <view class="ad-container">
+      <ad unit-id="adunit-78a2217bef3d5c0f"></ad>
     </view>
   </view>
 </template>
@@ -123,44 +128,54 @@ export default defineComponent({
 @use '../../config';
 
 .share-page {
-  padding: 16rpx;
   display: flex;
-  height: calc(100vh - 32rpx);
+  height: 100vh;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
 
-  .title {
-    font-size: 40rpx;
-    font-weight: bold;
-    margin-bottom: 16rpx;
-  }
-
-  .answer {
-    height: 68rpx;
-    line-height: 68rpx;
-    border: 6rpx solid config.$theme-border;
-    padding: 8rpx 16rpx;
-    margin: 16rpx;
-  }
-
-  .tip {
-    color: config.$theme-orange;
-    font-size: 28rpx;
-    line-height: 28rpx;
-    width: 100%;
-    text-align: center;
-    height: 28rpx;
-    margin-top: 16rpx;
-  }
-
-  .btngrp {
+  .content {
+    padding: 16rpx;
     display: flex;
-    justify-content: center;
+    height: 100%;
+    flex-direction: column;
     align-items: center;
-    margin: 32rpx 0;
-    .btn {
-      margin: 0 16rpx;
+    overflow: auto;
+    flex: 1;
+
+    .title {
+      font-size: 40rpx;
+      font-weight: bold;
+      margin-bottom: 16rpx;
+    }
+  
+    .answer {
+      height: 68rpx;
+      line-height: 68rpx;
+      border: 6rpx solid config.$theme-border;
+      padding: 8rpx 16rpx;
+      margin: 16rpx;
+    }
+  
+    .tip {
+      color: config.$theme-orange;
+      font-size: 28rpx;
+      line-height: 28rpx;
+      width: 100%;
+      text-align: center;
+      height: 28rpx;
+      margin-top: 16rpx;
+    }
+  
+    .btngrp {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 32rpx 0;
+      .btn {
+        margin: 0 16rpx;
+      }
     }
   }
+
 }
 </style>
