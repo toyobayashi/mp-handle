@@ -3,10 +3,7 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "汉兜猜词",
-				"usingComponents": {
-					"custom-ad": "/wxcomponents/custom-ad/custom-ad"
-				}
+				"navigationBarTitleText": "汉兜猜词"
 			}
 		},
 		{
@@ -38,6 +35,9 @@
 		"navigationBarTextStyle": "white",
 		"navigationBarTitleText": "汉兜猜词",
 		"navigationBarBackgroundColor": "#0D828E",
-		"backgroundColor": "#FFFFFF"
+		"backgroundColor": "#FFFFFF",
+		"usingComponents": {
+			"custom-ad": "/wxcomponents/custom-ad/custom-ad"
+		}
 	}
 }

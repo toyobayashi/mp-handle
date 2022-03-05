@@ -23,6 +23,7 @@ import { onLoad, onReady } from '@dcloudio/uni-app'
 import { MAX_TRIES } from '../../utils/constants'
 import { computed } from 'vue'
 import { checkUpdate } from '../../utils/update'
+// import AdDialog from '../../components/AdDialog.vue'
 
 const mainStore = useMainStore()
 
