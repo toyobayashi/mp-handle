@@ -1,8 +1,10 @@
 <script lang="ts">
 /// <reference types="@dcloudio/types" />
 
+import { onReady } from '@dcloudio/uni-app'
 import { computed, defineComponent, ref } from 'vue'
 import GameButton from '../../components/GameButton.vue'
+import { useInterstitialAd } from '../../composables/ad'
 import { isFourCharWord, isFourCharWordInDict } from '../../utils/utils'
 
 const answerInput = ref('')
@@ -63,6 +65,16 @@ export default defineComponent({
         delta: 1
       })
     }
+
+    const whenReady = useInterstitialAd('adunit-57f477935e83f37a')
+
+    onReady(() => {
+      whenReady.then((ad) => {
+        ad.show().catch((err) => {
+          console.error(err)
+        })
+      })
+    })
 
     return {
       answerInput,
