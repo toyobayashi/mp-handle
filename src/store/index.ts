@@ -12,6 +12,7 @@ export const useMainStore = defineStore('main', {
       answer: ANSWERS[Math.floor(Math.random() * ANSWERS.length)],
       gameState: 0 as -1 | 0 | 1,
       hintLevel: 0 as 0 | 1 | 2,
+      enableAd: true,
       sharedAnswer: null as [string, string] | null
     }
   },

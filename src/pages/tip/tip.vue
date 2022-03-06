@@ -111,7 +111,7 @@ const sheet = computed(() => {
 
 <template>
   <view class="tip-page">
-    <view class="ad-container">
+    <view class="ad-container" v-if="mainStore.enableAd">
       <custom-ad unit-id="adunit-a08b8a80b07f3e37"></custom-ad>
     </view>
     <view class="content">
@@ -141,7 +141,7 @@ const sheet = computed(() => {
         </view>
       </view>
     </view>
-    <view class="ad-container">
+    <view class="ad-container" v-if="mainStore.enableAd">
       <ad unit-id="adunit-838da8166c0d92b9"></ad>
     </view>
   </view>

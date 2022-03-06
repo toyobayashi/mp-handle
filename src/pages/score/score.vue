@@ -18,11 +18,11 @@ export default {
 
 <script setup lang="ts">
 import { computed } from 'vue'
-// import { useMainStore } from '../../store/index'
+import { useMainStore } from '../../store/index'
 import GameButton from '../../components/GameButton.vue'
 import { tries } from '../../composables/storage'
 
-// const mainStore = useMainStore()
+const mainStore = useMainStore()
 
 const clear = () => {
   tries.value = tries.value.filter(t => !('end' in t))
@@ -87,7 +87,7 @@ const avrTime = computed(() => {
 
 <template>
   <view class="score-page">
-    <view class="ad-container">
+    <view class="ad-container" v-if="mainStore.enableAd">
       <custom-ad unit-id="adunit-b93ca0c479d68392"></custom-ad>
     </view>
     <view class="content">
@@ -123,7 +123,7 @@ const avrTime = computed(() => {
         <GameButton class="btn" @click="back">返回游戏</GameButton>
       </view>
     </view>
-    <view class="ad-container">
+    <view class="ad-container" v-if="mainStore.enableAd">
       <ad unit-id="adunit-fe7e15cce73e6dd3"></ad>
     </view>
   </view>

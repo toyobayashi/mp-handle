@@ -194,7 +194,7 @@ const go = () => {
         <WordLine v-for="(line, index) in answerList" :key="line + index" :word="line" result />
       </view>
     </view>
-    <view class="ad-container">
+    <view class="ad-container" v-if="mainStore.enableAd">
       <ad unit-id="adunit-531b04844930193d"></ad>
     </view>
   </view>

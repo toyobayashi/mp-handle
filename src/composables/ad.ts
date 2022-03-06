@@ -1,8 +1,10 @@
 import { onLoad, onUnload } from '@dcloudio/uni-app'
 import { ref } from 'vue'
+import { useMainStore } from '../store'
 import { deferred } from '../utils/deferred'
 
 export function useInterstitialAd (id: string) {
+  const mainStore = useMainStore()
   const ad = ref<UniApp.InterstitialAdContext | null>(null)
 
   const adWhenReady = ref(deferred<UniApp.InterstitialAdContext>())
@@ -38,6 +40,7 @@ export function useInterstitialAd (id: string) {
   })
 
   const show = (onClose?: () => void) => {
+    if (!mainStore.enableAd) return Promise.reject()
     userOnClose = onClose
     return adWhenReady.value.then((ad) => ad.show())
   }

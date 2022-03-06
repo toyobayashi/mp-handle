@@ -20,6 +20,7 @@ export default {
 import WordLine from '../../components/WordLine.vue'
 import GameButton from '../../components/GameButton.vue'
 import { ref } from 'vue'
+import { useMainStore } from '../../store'
 
 const backHome = () => {
   uni.navigateBack({
@@ -27,13 +28,24 @@ const backHome = () => {
   })
 }
 
+const mainStore = useMainStore()
+
 const versionName = ref(__VERSION__)
+
+let count = 0
+
+const onClickTitle = () => {
+  if (!mainStore.enableAd) return
+  if (++count >= 10) {
+    mainStore.enableAd = false
+  }
+}
 </script>
 
 <template>
   <view class="help">
     <view class="content">
-      <view class="title">汉兜猜词</view>
+      <view class="title" @click="onClickTitle">汉兜猜词</view>
       <view class="subtitle">汉字版 Wordle 成语猜词小程序 v{{versionName}}</view>
       <view class="subtitle"><text user-select>https://github.com/toyobayashi/mp-handle</text></view>
       <view class="subtitle">本小程序为汉兜的社区延伸版本</view>
@@ -63,7 +75,7 @@ const versionName = ref(__VERSION__)
       <view class="p">如果您想要添加更多成语答案，可以访问本页顶部的代码仓库地址，打开新的 Issue 或 Pull request。期待您的贡献。</view>
       <GameButton class="backhome" @click="backHome">返回游戏</GameButton>
     </view>
-    <view class="ad-container">
+    <view class="ad-container" v-if="mainStore.enableAd">
       <ad unit-id="adunit-010ba33d4a8eb064"></ad>
     </view>
   </view>

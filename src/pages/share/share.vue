@@ -5,6 +5,7 @@ import { onReady } from '@dcloudio/uni-app'
 import { computed, defineComponent, ref } from 'vue'
 import GameButton from '../../components/GameButton.vue'
 import { useInterstitialAd } from '../../composables/ad'
+import { useMainStore } from '../../store'
 import { isFourCharWord, isFourCharWordInDict } from '../../utils/utils'
 
 const answerInput = ref('')
@@ -15,6 +16,8 @@ export default defineComponent({
     GameButton
   },
   setup () {
+    const mainStore = useMainStore()
+
     const share = (word: string, hint: string) => {
       if (!isFourCharWord(word)) {
         throw new Error('请输入 4 个字的词语')
@@ -81,6 +84,7 @@ export default defineComponent({
     }
 
     return {
+      mainStore,
       answerInput,
       hintInput,
       validateShare,
@@ -113,7 +117,7 @@ export default defineComponent({
 
 <template>
   <view class="share-page">
-    <view class="ad-container">
+    <view class="ad-container" v-if="mainStore.enableAd">
       <custom-ad :unit-id="'adunit-e84d9fb0b8a0a887'" @error="onError"></custom-ad>
     </view>
     <view class="content">
@@ -138,7 +142,7 @@ export default defineComponent({
         <GameButton class="btn" @click="back">返回游戏</GameButton>
       </view>
     </view>
-    <view class="ad-container">
+    <view class="ad-container" v-if="mainStore.enableAd">
       <ad unit-id="adunit-78a2217bef3d5c0f"></ad>
     </view>
   </view>
