@@ -18,7 +18,7 @@ export default {
 import { useMainStore } from '../../store/index'
 import AnswerInput from '../../components/AnswerInput.vue'
 import WordLine from '../../components/WordLine.vue'
-import { answerList, firstVisit } from '../../composables/storage'
+import { answerList, firstVisit, lastQuestion } from '../../composables/storage'
 import { onLoad, onReady } from '@dcloudio/uni-app'
 import { MAX_TRIES } from '../../utils/constants'
 import { computed } from 'vue'
@@ -74,8 +74,28 @@ onReady(() => {
         }
       })
     } else {
-      mainStore.startGame()
-      checkUpdate()
+      if (lastQuestion.value) {
+        uni.showModal({
+          title: '提示',
+          content: '您有进行中的答题，是否继续完成上次的题目？',
+          confirmText: '继续上次',
+          cancelText: '新来一题',
+          success: (res) => {
+            if (res.confirm) {
+              mainStore.startGame(lastQuestion.value!.answer, true)
+              lastQuestion.value!.tries.forEach((input) => {
+                answerList.value.unshift(input)
+              })
+            } else {
+              mainStore.startGame()
+              checkUpdate()
+            }
+          }
+        })
+      } else {
+        mainStore.startGame()
+        checkUpdate()
+      }
     }
   }
 })
@@ -94,6 +114,7 @@ const showAnswer = () => {
       if (res.confirm) {
         mainStore.setAnswerInput('')
         mainStore.gameState = -1
+        lastQuestion.value = null
         answerList.value.unshift(mainStore.answerWord)
         if (mainStore.currentTry) {
           mainStore.currentTry.end = Date.now()

@@ -43,5 +43,11 @@ export interface Try {
   passed?: boolean
 }
 
+export interface Question {
+  answer: [string, string]
+  tries: string[]
+}
+
 export const tries = useStorage<Try[]>('hd_tries', [])
 export const firstVisit = useStorage<boolean>('hd_first_visit', true)
+export const lastQuestion = useStorage<Question | null>('hd_last_question', null)

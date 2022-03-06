@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { answerList, tries } from '../composables/storage'
+import { answerList, lastQuestion, tries } from '../composables/storage'
 import type { Try } from '../composables/storage'
 import ANSWERS from '../utils/answers'
 import { MAX_TRIES, PLATFORM } from '../utils/constants'
@@ -42,10 +42,10 @@ export const useMainStore = defineStore('main', {
     setAnswerInput (value: string) {
       this.answerInput = value
     },
-    resetAnswer (answer?: [string, string]) {
+    resetAnswer (answer?: [string, string]): [string, string] {
       if (answer) {
         this.answer = answer
-        return
+        return [...answer]
       }
       const index = ANSWERS.indexOf(this.answer)
       let newIndex: number
@@ -53,12 +53,19 @@ export const useMainStore = defineStore('main', {
         newIndex = Math.floor(Math.random() * ANSWERS.length)
       } while (newIndex === index)
       this.answer = ANSWERS[newIndex]
+      return [this.answer[0], this.hintChar.kanji]
     },
-    startGame (answer?: [string, string]) {
+    startGame (answer?: [string, string], continueLastGame?: boolean) {
       this.setAnswerInput('')
       answerList.value = []
       this.hintLevel = 0
-      this.resetAnswer(answer)
+      const realAnswer = this.resetAnswer(answer)
+      if (!continueLastGame) {
+        lastQuestion.value = {
+          answer: realAnswer,
+          tries: []
+        }
+      }
       this.gameState = 0
       if (PLATFORM === 'devtools') {
         console.log(this.answerWord)
@@ -66,14 +73,14 @@ export const useMainStore = defineStore('main', {
       const latestTry = tries.value[tries.value.length - 1]
       if (!latestTry || 'end' in latestTry) {
         tries.value.push({
-          tries: 0,
-          start: Date.now()
+          tries: continueLastGame ? lastQuestion.value!.tries.length : 0,
+          start: Date.now() // TODO
         })
       } else {
         tries.value.pop()
         tries.value.push({
-          tries: 0,
-          start: Date.now()
+          tries: continueLastGame ? lastQuestion.value!.tries.length : 0,
+          start: Date.now() // TODO
         })
       }
     },
@@ -88,6 +95,7 @@ export const useMainStore = defineStore('main', {
         this.currentTry!.end = Date.now()
         this.currentTry!.passed = true
         this.gameState = 1
+        lastQuestion.value = null
         return this.gameState
       }
 
@@ -95,7 +103,12 @@ export const useMainStore = defineStore('main', {
         this.currentTry!.end = Date.now()
         this.currentTry!.passed = false
         this.gameState = -1
+        lastQuestion.value = null
         return this.gameState
+      }
+
+      if (lastQuestion.value) {
+        lastQuestion.value.tries = [...answerList.value]
       }
 
       return 0
