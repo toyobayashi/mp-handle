@@ -86,6 +86,7 @@ export const useMainStore = defineStore('main', {
       }
     },
     confirmAnswer () {
+      if (this.answerInput === '') return 0
       answerList.value.unshift(this.answerInput)
       this.setAnswerInput('')
       if (this.currentTry) {
