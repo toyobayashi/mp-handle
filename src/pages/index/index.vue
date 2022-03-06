@@ -74,7 +74,7 @@ onReady(() => {
         }
       })
     } else {
-      if (lastQuestion.value) {
+      if (lastQuestion.value && lastQuestion.value.tries.length > 0) {
         uni.showModal({
           title: '提示',
           content: '您有进行中的答题，是否继续完成上次的题目？',
