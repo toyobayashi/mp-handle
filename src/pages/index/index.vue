@@ -23,9 +23,22 @@ import { onLoad, onReady } from '@dcloudio/uni-app'
 import { MAX_TRIES } from '../../utils/constants'
 import { computed } from 'vue'
 import { checkUpdate } from '../../utils/update'
+import { useInterstitialAd } from '../../composables/ad'
 // import AdDialog from '../../components/AdDialog.vue'
 
 const mainStore = useMainStore()
+
+const { show: showCorrectAd } = useInterstitialAd('adunit-435472d324d4c2ba')
+const { show: showErrorAd } = useInterstitialAd('adunit-b647e800fda3c790')
+
+const resultPrefix = computed(() => {
+  switch (mainStore.gameState) {
+    case 0: return ''
+    case 1: return '恭喜答对正确答案：'
+    case -1: return '很遗憾，正确答案是：'
+    default: return ''
+  }
+})
 
 onLoad((options) => {
   if (options.answer) {
@@ -80,6 +93,7 @@ const showAnswer = () => {
     success: (res) => {
       if (res.confirm) {
         mainStore.setAnswerInput('')
+        mainStore.gameState = -1
         answerList.value.unshift(mainStore.answerWord)
         if (mainStore.currentTry) {
           mainStore.currentTry.end = Date.now()
@@ -105,13 +119,15 @@ const go = () => {
   if (result === 1) {
     uni.showModal({
       title: '提示',
-      content: '恭喜你答对了！',
-      confirmText: '再猜一次',
-      cancelText: '确定',
-      success: (res) => {
-        if (res.confirm) {
-          restart()
-        }
+      content: '恭喜你答对了！可点击右上角按钮再来一题',
+      showCancel: false,
+      // confirmText: '再猜一次',
+      // cancelText: '确定',
+      complete: () => {
+        showCorrectAd()
+        // if (res.confirm) {
+        //   restart()
+        // }
       }
     })
     return
@@ -120,13 +136,17 @@ const go = () => {
   if (result === -1) {
     uni.showModal({
       title: '提示',
-      content: `很遗憾没答对，答案是${mainStore.answerWord}`,
-      confirmText: '再猜一次',
-      cancelText: '确定',
-      success: (res) => {
-        if (res.confirm) {
-          restart()
-        }
+      content: `很遗憾没答对，答案是 ${mainStore.answerWord}。可点击右上角按钮再来一题`,
+      showCancel: false,
+      // confirmText: '再猜一次',
+      // cancelText: '确定',
+      // success: (res) => {
+      //   if (res.confirm) {
+      //     restart()
+      //   }
+      // }
+      complete: () => {
+        showErrorAd()
       }
     })
   }
@@ -147,7 +167,7 @@ const go = () => {
           </view>
           <WordLine :word="mainStore.$state.answerInput" :result="false" />
         </template>
-        <text class="the-answer" v-else>正确答案：{{mainStore.answerWord}}</text>
+        <text class="the-answer" v-else>{{resultPrefix}}{{mainStore.answerWord}}</text>
       </view>
       <view class="answers">
         <WordLine v-for="(line, index) in answerList" :key="line + index" :word="line" result />

@@ -76,7 +76,7 @@ const navigateToScore = () => {
     :disabled="mainStore.gameOver"
     @input="setAnswerInput" />
   <GameButton v-if="!mainStore.gameOver" class="confirm" :disabled="btnDisabled" @click="go">确定</GameButton>
-  <GameButton v-else class="confirm" @click="restart">再猜一次</GameButton>
+  <GameButton v-else class="confirm" @click="restart">再来一题</GameButton>
 </view>
 </template>
 

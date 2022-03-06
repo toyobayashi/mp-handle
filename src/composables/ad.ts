@@ -1,14 +1,13 @@
 import { onLoad, onUnload } from '@dcloudio/uni-app'
 import { ref } from 'vue'
+import { deferred } from '../utils/deferred'
 
 export function useInterstitialAd (id: string) {
   const ad = ref<UniApp.InterstitialAdContext | null>(null)
 
-  let _resolve: (ad: UniApp.InterstitialAdContext) => void
+  const adWhenReady = ref(deferred<UniApp.InterstitialAdContext>())
 
-  const whenReady = new Promise<UniApp.InterstitialAdContext>((resolve) => {
-    _resolve = resolve
-  })
+  let userOnClose: (() => void) | undefined
 
   onLoad(() => {
     if (uni.createInterstitialAd) {
@@ -16,12 +15,21 @@ export function useInterstitialAd (id: string) {
         adUnitId: id
       })
       ad.value.onLoad(() => {
-        _resolve(ad.value!)
+        adWhenReady.value.resolve(ad.value!)
       })
       ad.value.onError((err) => {
-        console.log(err)
+        adWhenReady.value.reject(err)
       })
-      ad.value.onClose(() => {});
+      ad.value.onClose(() => {
+        adWhenReady.value = deferred<UniApp.InterstitialAdContext>()
+        if (typeof userOnClose === 'function') {
+          const f = userOnClose
+          userOnClose = undefined
+          f()
+        }
+      });
+    } else {
+      adWhenReady.value.reject(new Error('createInterstitialAd is not supported'))
     }
   })
 
@@ -29,5 +37,14 @@ export function useInterstitialAd (id: string) {
     ad.value = null
   })
 
-  return whenReady
+  const show = (onClose?: () => void) => {
+    userOnClose = onClose
+    return adWhenReady.value.then((ad) => ad.show())
+  }
+
+  return {
+    ad,
+    adWhenReady,
+    show
+  }
 }

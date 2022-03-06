@@ -87,6 +87,9 @@ const avrTime = computed(() => {
 
 <template>
   <view class="score-page">
+    <view class="ad-container">
+      <custom-ad unit-id="adunit-b93ca0c479d68392"></custom-ad>
+    </view>
     <view class="content">
       <view class="title">记分板</view>
   

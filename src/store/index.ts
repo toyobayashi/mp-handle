@@ -10,6 +10,7 @@ export const useMainStore = defineStore('main', {
     return {
       answerInput: '',
       answer: ANSWERS[Math.floor(Math.random() * ANSWERS.length)],
+      gameState: 0 as -1 | 0 | 1,
       sharedAnswer: null as [string, string] | null
     }
   },
@@ -56,6 +57,7 @@ export const useMainStore = defineStore('main', {
       this.setAnswerInput('')
       answerList.value = []
       this.resetAnswer(answer)
+      this.gameState = 0
       if (PLATFORM === 'devtools') {
         console.log(this.answerWord)
       }
@@ -83,13 +85,15 @@ export const useMainStore = defineStore('main', {
       if (answerList.value[0] === this.answerWord) {
         this.currentTry!.end = Date.now()
         this.currentTry!.passed = true
-        return 1
+        this.gameState = 1
+        return this.gameState
       }
 
       if (answerList.value.length >= MAX_TRIES) {
         this.currentTry!.end = Date.now()
         this.currentTry!.passed = false
-        return -1
+        this.gameState = -1
+        return this.gameState
       }
 
       return 0

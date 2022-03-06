@@ -7,4 +7,9 @@ onShow(() => {
 onHide(() => {
 });
 </script>
-<style></style>
+
+<style lang="scss">
+.ad-container {
+  width: 100%;
+}
+</style>

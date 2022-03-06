@@ -66,21 +66,26 @@ export default defineComponent({
       })
     }
 
-    const whenReady = useInterstitialAd('adunit-57f477935e83f37a')
+    const {
+      show
+    } = useInterstitialAd('adunit-57f477935e83f37a')
 
     onReady(() => {
-      whenReady.then((ad) => {
-        ad.show().catch((err) => {
-          console.error(err)
-        })
+      show().catch((err) => {
+        console.error(err)
       })
     })
+
+    const onError = (err: any) => {
+      console.log(err)
+    }
 
     return {
       answerInput,
       hintInput,
       validateShare,
-      back
+      back,
+      onError
     }
   },
   onShareAppMessage (res: any) {
@@ -108,6 +113,9 @@ export default defineComponent({
 
 <template>
   <view class="share-page">
+    <view class="ad-container">
+      <custom-ad :unit-id="'adunit-e84d9fb0b8a0a887'" @error="onError"></custom-ad>
+    </view>
     <view class="content">
       <view class="title">给好友出题</view>
   
