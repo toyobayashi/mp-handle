@@ -17,15 +17,26 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import KanjiBox from '../../components/KanjiBox.vue'
 import GameButton from '../../components/GameButton.vue'
 import { useMainStore } from '../../store/index'
 import { answerList } from '../../composables/storage'
 import { getPinyin, parsePinyin, testAnswer, pinyinInitials, pinyinFinals } from '../../utils/pinyin'
 import type { Props as KanjiBoxProps } from '../../components/KanjiBox.vue'
+import { useInterstitialAd } from '../../composables/ad'
+import { onReady } from '@dcloudio/uni-app'
 
 const mainStore = useMainStore()
+
+const { show } = useInterstitialAd('adunit-99126356b2a2e3a5')
+
+onReady(() => {
+  show().catch((err) => {
+    console.error(err)
+  })
+})
+
 const hintLevel = computed(() => mainStore.hintLevel)
 
 const hintChar = computed(() => mainStore.hintChar)
@@ -100,6 +111,9 @@ const sheet = computed(() => {
 
 <template>
   <view class="tip-page">
+    <view class="ad-container">
+      <custom-ad unit-id="adunit-a08b8a80b07f3e37"></custom-ad>
+    </view>
     <view class="content">
       <view class="tip">答案包含以下汉字</view>
   
