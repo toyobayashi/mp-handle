@@ -11,6 +11,7 @@ export const useMainStore = defineStore('main', {
       answerInput: '',
       answer: ANSWERS[Math.floor(Math.random() * ANSWERS.length)],
       gameState: 0 as -1 | 0 | 1,
+      hintLevel: 0 as 0 | 1 | 2,
       sharedAnswer: null as [string, string] | null
     }
   },
@@ -56,6 +57,7 @@ export const useMainStore = defineStore('main', {
     startGame (answer?: [string, string]) {
       this.setAnswerInput('')
       answerList.value = []
+      this.hintLevel = 0
       this.resetAnswer(answer)
       this.gameState = 0
       if (PLATFORM === 'devtools') {

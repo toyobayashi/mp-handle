@@ -26,11 +26,17 @@ import { getPinyin, parsePinyin, testAnswer, pinyinInitials, pinyinFinals } from
 import type { Props as KanjiBoxProps } from '../../components/KanjiBox.vue'
 
 const mainStore = useMainStore()
-const moreTip = ref(false)
+const hintLevel = computed(() => mainStore.hintLevel)
 
 const hintChar = computed(() => mainStore.hintChar)
 
 const sheet = computed(() => {
+  if (hintLevel.value < 2) {
+    return {
+      seiboMap: {},
+      inboMap: {}
+    }
+  }
   const list = answerList.value.map(word => {
     const pinyinArr = getPinyin(word).map(parsePinyin)
   
@@ -99,7 +105,7 @@ const sheet = computed(() => {
   
       <KanjiBox
         class="kanji"
-        :kanji="moreTip ? hintChar.kanji : '?'"
+        :kanji="hintLevel > 0 ? hintChar.kanji : '?'"
         :result="false"
         :kanjiStatus="0"
         :seichou="hintChar.seichou"
@@ -109,10 +115,10 @@ const sheet = computed(() => {
         :inbo="hintChar.inbo"
         :inboStatus="0" />
       
-      <GameButton class="tipbtn" v-if="!moreTip" @click="moreTip = true">进一步提示</GameButton>
-      <GameButton class="tipbtn" v-else @click="moreTip = false">遮挡</GameButton>
+      <GameButton class="tipbtn" v-if="hintLevel === 0" @click="mainStore.hintLevel = 1">进一步提示</GameButton>
+      <GameButton class="tipbtn" v-else-if="hintLevel === 1" @click="mainStore.hintLevel = 2">查看拼音表</GameButton>
   
-      <view class="sheet">
+      <view class="sheet" v-if="hintLevel === 2">
         <view class="seibo-sheet">
           <view class="sheet-item" :class="{ mis: status === 1, ok: status === 2, no: status === 0 }" v-for="(status, seibo) in sheet.seiboMap" :key="seibo">{{seibo}}</view>
         </view>
@@ -159,6 +165,8 @@ const sheet = computed(() => {
       justify-content: space-between;
       flex-direction: row;
       align-items: flex-start;
+      margin-top: 32rpx;
+
       .seibo-sheet {
         flex: 1;
         display: flex;
