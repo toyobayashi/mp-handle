@@ -34,9 +34,13 @@ const versionName = ref(__VERSION__)
   <view class="help">
     <view class="content">
       <view class="title">汉兜猜词</view>
-      <view class="subtitle">汉字版 Wordle 成语猜词小程序</view>
-      <view class="subtitle">v{{versionName}}</view>
+      <view class="subtitle">汉字版 Wordle 成语猜词小程序 v{{versionName}}</view>
       <view class="subtitle"><text user-select>https://github.com/toyobayashi/mp-handle</text></view>
+      <view class="subtitle">本小程序为汉兜的社区延伸版本</view>
+      <view class="subtitle">与原汉兜游戏并无直接关联</view>
+      <view class="subtitle">原仓库链接：<text user-select>https://github.com/antfu/handle</text></view>
+      <view class="subtitle">原游戏链接：<text user-select>https://handle.antfu.me</text></view>
+      <view class="subtitle">感谢原作者：Anthony 与 Inès</view>
       <view class="subtitle2">游戏规则</view>
       <view class="p">你有十次的机会猜一个 <text class="ok">四字词语</text></view>
       <view class="p">每次猜测后，汉字与拼音的颜色将会标识其与正确答案的区别。</view>
