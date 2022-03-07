@@ -1,5 +1,9 @@
-import IDIOMS from './idioms'
+import _polyphones from '../data/polyphones.json'
+import _idiomList from '../data/idioms.json'
 import pinyin from 'pinyin'
+
+const polyphones = _polyphones as Record<string, string>
+const idiomList = _idiomList as string[]
 
 export const pinyinInitials = 'b p m f d t n l g k h j q r x w y zh ch sh z c s'.split(/\s/g)
 
@@ -25,11 +29,20 @@ export function parsePinyin (pinyin: string): [string, string, 0 | 1 | 2 | 3 | 4
   return [one ?? '', rest, 0]
 }
 
+export function getIdiom (word: string): [string, string | undefined] | undefined {
+  if (polyphones[word])
+    return [word, polyphones[word]]
+  if (idiomList.indexOf(word) !== -1)
+    return [word, undefined]
+  return undefined
+}
+
 export function getPinyin (word: string): string[] {
-  const data = IDIOMS.find(d => d[0] === word)
-  if (data && data[1])
-    return data[1].split(/\s+/g)
-  return pinyin(word, { style: pinyin.STYLE_TONE2 }).map(i => i[0])
+  const data = getIdiom(word)
+  const originalPinyin = (data && data[1])
+    ? data[1].split(/\s+/g)
+    : pinyin(word, { style: pinyin.STYLE_TONE2 }).map(i => i[0])
+  return originalPinyin.map(i => i.replace(/^(y|j|q|x)u([0-9]?)$/g, '$1v$2'))
 }
 
 export interface ParsedChar {

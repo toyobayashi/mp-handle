@@ -76,12 +76,12 @@ const sheet = computed(() => {
     return res
   })
 
-  const seiboMap: any = {}
+  const seiboMap: Record<string, number> = {}
   pinyinInitials.forEach(s => {
     seiboMap[s] = 0
   })
 
-  const inboMap: any = {}
+  const inboMap: Record<string, number> = {}
   pinyinFinals.forEach(s => {
     inboMap[s] = 0
   })
@@ -137,7 +137,7 @@ const sheet = computed(() => {
           <view class="sheet-item" :class="{ mis: status === 1, ok: status === 2, no: status === 0 }" v-for="(status, seibo) in sheet.seiboMap" :key="seibo">{{seibo}}</view>
         </view>
         <view class="inbo-sheet">
-          <view class="sheet-item" :class="{ mis: status === 1, ok: status === 2, no: status === 0 }" v-for="(status, inbo) in sheet.inboMap" :key="inbo">{{inbo}}</view>
+          <view class="sheet-item" :class="{ mis: status === 1, ok: status === 2, no: status === 0 }" v-for="(status, inbo) in sheet.inboMap" :key="inbo">{{inbo.replace('v', 'ü')}}</view>
         </view>
       </view>
     </view>

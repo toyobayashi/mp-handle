@@ -38,7 +38,7 @@ const kanjiClass = useStatusClass('kanjiStatus')
 <view class="kanji-box" :class="{ ok: props.result && props.kanjiStatus === 2, no: props.result && props.kanjiStatus !== 2 }">
   <view class="pinyin">
     <text class="seibo" :class="seiboClass">{{props.kanji ? props.seibo : ''}}</text>
-    <text class="inbo" :class="inboClass">{{props.kanji ? props.inbo : ''}}</text>
+    <text class="inbo" :class="inboClass">{{props.kanji ? (props.inbo.replace('v', 'ü')) : ''}}</text>
     <text class="seichou" :class="seichouClass">{{props.kanji ? props.seichou : ''}}</text>
   </view>
   <view class="kanji" :class="kanjiClass">{{props.kanji}}</view>
