@@ -1,5 +1,4 @@
-import _polyphones from '../data/polyphones.json'
-import _idiomList from '../data/idioms.json'
+import { polyphones, idiomList } from './idioms'
 
 const _answerRegEx = /^[\u4e00-\u9fa5]{4}$/
 
@@ -8,5 +7,5 @@ export function isFourCharWord (word: string) {
 }
 
 export function isFourCharWordInDict (word: string) {
-  return (word in _polyphones) || (_idiomList.indexOf(word) !== -1)
+  return (word in polyphones) || (idiomList.indexOf(word) !== -1)
 }

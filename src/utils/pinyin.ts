@@ -1,9 +1,5 @@
-import _polyphones from '../data/polyphones.json'
-import _idiomList from '../data/idioms.json'
 import pinyin from 'pinyin'
-
-const polyphones = _polyphones as Record<string, string>
-const idiomList = _idiomList as string[]
+import { polyphones, idiomList } from './idioms'
 
 export const pinyinInitials = 'b p m f d t n l g k h j q r x w y zh ch sh z c s'.split(/\s/g)
 
@@ -30,8 +26,8 @@ export function parsePinyin (pinyin: string): [string, string, 0 | 1 | 2 | 3 | 4
 }
 
 export function getIdiom (word: string): [string, string | undefined] | undefined {
-  if (polyphones[word])
-    return [word, polyphones[word]]
+  if (word in polyphones)
+    return [word, polyphones[word as keyof typeof polyphones]]
   if (idiomList.indexOf(word) !== -1)
     return [word, undefined]
   return undefined
