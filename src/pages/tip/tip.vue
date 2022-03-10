@@ -92,12 +92,16 @@ const sheet = computed(() => {
         seiboMap[line[i].seibo] = 2
       } else if (line[i].seiboStatus === 1) {
         if (seiboMap[line[i].seibo] < 2) seiboMap[line[i].seibo] = 1
+      } else {
+        if (seiboMap[line[i].seibo] === 0) seiboMap[line[i].seibo] = -1
       }
 
       if (line[i].inboStatus === 2) {
         inboMap[line[i].inbo] = 2
       } else if (line[i].inboStatus === 1) {
         if (inboMap[line[i].inbo] < 2) inboMap[line[i].inbo] = 1
+      } else {
+        if (inboMap[line[i].inbo] === 0) inboMap[line[i].inbo] = -1
       }
     }
   })
@@ -134,10 +138,10 @@ const sheet = computed(() => {
   
       <view class="sheet" v-if="hintLevel === 2">
         <view class="seibo-sheet">
-          <view class="sheet-item" :class="{ mis: status === 1, ok: status === 2, no: status === 0 }" v-for="(status, seibo) in sheet.seiboMap" :key="seibo">{{seibo}}</view>
+          <view class="sheet-item" :class="{ mis: status === 1, ok: status === 2, no: status === -1 }" v-for="(status, seibo) in sheet.seiboMap" :key="seibo">{{seibo}}</view>
         </view>
         <view class="inbo-sheet">
-          <view class="sheet-item" :class="{ mis: status === 1, ok: status === 2, no: status === 0 }" v-for="(status, inbo) in sheet.inboMap" :key="inbo">{{inbo.replace('v', 'ü')}}</view>
+          <view class="sheet-item" :class="{ mis: status === 1, ok: status === 2, no: status === -1 }" v-for="(status, inbo) in sheet.inboMap" :key="inbo">{{inbo.replace('v', 'ü')}}</view>
         </view>
       </view>
     </view>
@@ -211,8 +215,7 @@ const sheet = computed(() => {
           font-weight: bold;
         }
         &.no {
-          opacity: 0.5;
-          color: rgb(55,65,81);
+          opacity: 0.3;
         }
       }
     }
