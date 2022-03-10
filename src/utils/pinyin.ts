@@ -1,16 +1,9 @@
 import pinyin from 'pinyin'
 import { polyphones, idiomList } from './idioms'
 
-export const pinyinInitials = 'b p m f d t n l g k h j q r x w y zh ch sh z c s'.split(/\s/g)
+export const pinyinInitials = 'b p m f d t n l g k h j q r x w y zh ch sh z c s'.split(' ')
 
-export const pinyinFinals = 'a o e ai ei ao ou an en ang eng ong er i ia io ie iao iu ian in iang ing iong u ua uo uai ui uan un uang ueng v ve van vn'
-  .split(/\s/g)
-  .sort((a, b) => {
-    const i = a.length - b.length
-    if (i === 0)
-      return a.localeCompare(b)
-    return i
-  })
+export const pinyinFinals = 'a ai an ang ao e ei en eng er i ia ian iang iao ie in ing io iong iu o ong ou u ua uai uan uang ui un uo v van ve vn'.split(' ')
 
 export function parsePinyin (pinyin: string): [string, string, 0 | 1 | 2 | 3 | 4] {
   if (!pinyin) return ['', '', 0]
@@ -38,7 +31,7 @@ export function getPinyin (word: string): string[] {
   const originalPinyin = (data && data[1])
     ? data[1].split(/\s+/g)
     : pinyin(word, { style: pinyin.STYLE_TONE2 }).map(i => i[0])
-  return originalPinyin.map(i => i.replace(/^(y|j|q|x)u([0-9]?)$/g, '$1v$2'))
+  return originalPinyin.map(i => i.replace(/^(y|j|q|x)u([a-z]*[0-9]?)$/g, '$1v$2'))
 }
 
 export interface ParsedChar {
