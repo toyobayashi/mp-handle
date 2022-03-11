@@ -20,12 +20,16 @@ export default {
 import { computed, shallowRef } from 'vue'
 import { useMainStore } from '../../store/index'
 import GameButton from '../../components/GameButton.vue'
+import Calender from '../../components/Calender.vue'
 import { tries } from '../../utils/try'
 
 const mainStore = useMainStore()
 
 const clear = () => {
   tries.clear()
+  results.value = []
+  winTimes.value = 0
+  winTimesWithNoHint.value = 0
   uni.showToast({
     title: '清除成功',
     icon: 'none'
@@ -116,6 +120,9 @@ const avrTime = computed(() => {
         <GameButton class="btn" @click="clear">清空记录</GameButton>
         <GameButton class="btn" @click="back">返回游戏</GameButton>
       </view>
+
+      <view class="title">获胜打卡</view>
+      <Calender />
     </view>
     <view class="ad-container" v-if="mainStore.enableAd">
       <ad unit-id="adunit-fe7e15cce73e6dd3"></ad>
