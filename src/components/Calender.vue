@@ -81,7 +81,11 @@ function next () {
       :key="d.date"
       :class="{
         active: d.active
-      }">{{d.date}}</text>
+      }">
+      <text class="inner">
+        {{d.date}}
+      </text>
+    </text>
   </view>
 </view>
 </template>
@@ -96,7 +100,7 @@ function next () {
 }
 .calender {
   position: relative;
-  width: 620rpx;
+  width: 566rpx;
   border: 2rpx solid rgb(127, 157, 185);
   box-sizing: border-box;
   font-size: 32rpx;
@@ -119,16 +123,21 @@ function next () {
   flex-wrap: wrap;
 }
 .calender .date > text {
-  display: flex;
   width: 80rpx;
+  height: 80rpx;
+  padding: 4rpx;
+  box-sizing: border-box;
+}
+.calender .date > text .inner {
+  display: flex;
+  width: 72rpx;
+  height: 72rpx;
   justify-content: center;
   align-items: center;
-  height: 80rpx;
   font-size: 32rpx;
   box-sizing: border-box;
-  margin: 4rpx;
 }
-.calender .date > text.active {
+.calender .date > text.active .inner {
   background-color: config.$theme-color;
   border-radius: 50%;
   color: #fff;
