@@ -90,6 +90,8 @@ const avrTime = computed(() => {
     </view>
     <view class="content">
       <view class="title">记分板</view>
+
+      <view class="tip">注意：本小程序无后端服务，所有数据都是本地存储的，这意味着如果清除微信数据、重装微信或在新设备上登录，这些记录将会丢失。</view>
   
       <view class="line">
         <text class="label">游戏次数</text>
@@ -151,6 +153,12 @@ const avrTime = computed(() => {
       font-size: 40rpx;
       font-weight: bold;
       margin-bottom: 16rpx;
+    }
+    .tip {
+      color: rgb(55,65,81);
+      opacity: 0.5;
+      font-size: 28rpx;
+      margin: 32rpx;
     }
     .line {
       display: flex;

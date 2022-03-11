@@ -21,6 +21,7 @@ import WordLine from '../../components/WordLine.vue'
 import GameButton from '../../components/GameButton.vue'
 import { ref } from 'vue'
 import { useMainStore } from '../../store'
+import ANSWERS from '../../utils/answers'
 
 const backHome = () => {
   uni.navigateBack({
@@ -72,7 +73,9 @@ const onClickTitle = () => {
         <WordLine word="武运昌隆" result answer="武运昌隆" />
       </view>
       <view class="p">当四个格子都为青色时，你便赢得了游戏！</view>
-      <view class="p">如果您想要添加更多成语答案，可以访问本页顶部的代码仓库地址，打开新的 Issue 或 Pull request。期待您的贡献。</view>
+      <view class="p">题目数量是有限的，你可能会遇到相同的题目</view>
+      <view class="p">现有题目数量：{{ANSWERS.length}}</view>
+      <view class="p">如果你想要添加更多题目，可以访问本页顶部的小程序代码仓库地址，打开新的 Issue 或 Pull request。期待你的贡献。</view>
       <GameButton class="backhome" @click="backHome">返回游戏</GameButton>
     </view>
     <view class="ad-container" v-if="mainStore.enableAd">
