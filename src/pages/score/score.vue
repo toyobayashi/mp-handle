@@ -17,15 +17,15 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, shallowRef } from 'vue'
 import { useMainStore } from '../../store/index'
 import GameButton from '../../components/GameButton.vue'
-import { tries } from '../../composables/storage'
+import { tries } from '../../utils/try'
 
 const mainStore = useMainStore()
 
 const clear = () => {
-  tries.value = tries.value.filter(t => !('end' in t))
+  tries.clear()
   uni.showToast({
     title: '清除成功',
     icon: 'none'
@@ -48,21 +48,15 @@ const formatTime = (ms: number): string => {
   return `${h > 0 ? h + '小时' : ''}${m > 0 ? m + '分': ''}${s}秒`
 }
 
-const results =  computed(() => {
-  return tries.value.filter(t => 'end' in t)
-})
+const results = shallowRef(tries.filter(t => 'end' in t))
 
 const gameTimes = computed(() => {
   return results.value.length
 })
 
-const winTimes = computed(() => {
-  return tries.value.filter(t => t.passed).length
-})
+const winTimes = shallowRef(tries.filter(t => t.passed).length)
 
-const winTimesWithNoHint = computed(() => {
-  return tries.value.filter(t => t.passed && !t.hint).length
-})
+const winTimesWithNoHint = shallowRef(tries.filter(t => t.passed && !t.hint).length)
 
 const winRate = computed(() => {
   if (gameTimes.value === 0) return 0

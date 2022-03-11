@@ -35,19 +35,10 @@ export function useStorage<T = any> (key: string, defaultValue?: MaybeRef<T>): R
 // export const answerList = useStorage<string[]>('hd_answer_list', [])
 export const answerList = ref<string[]>([])
 
-export interface Try {
-  tries: number
-  start: number
-  end?: number
-  hint?: boolean
-  passed?: boolean
-}
-
 export interface Question {
   answer: [string, string]
   tries: string[]
 }
 
-export const tries = useStorage<Try[]>('hd_tries', [])
 export const firstVisit = useStorage<boolean>('hd_first_visit', true)
 export const lastQuestion = useStorage<Question | null>('hd_last_question', null)

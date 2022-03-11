@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
-import { answerList, lastQuestion, tries } from '../composables/storage'
-import type { Try } from '../composables/storage'
+import { answerList, lastQuestion } from '../composables/storage'
+import { tries } from '../utils/try'
 import ANSWERS from '../utils/answers'
 import { MAX_TRIES, PLATFORM } from '../utils/constants'
 import { parseAnswer, ParsedChar } from '../utils/pinyin'
@@ -34,9 +34,6 @@ export const useMainStore = defineStore('main', {
         index = Math.floor(Math.random() * this.parsedAnswer.length)
       }
       return this.parsedAnswer[index]
-    },
-    currentTry (): Try | undefined {
-      return tries.value[tries.value.length - 1]
     }
   },
   actions: {
@@ -71,15 +68,15 @@ export const useMainStore = defineStore('main', {
       if (PLATFORM === 'devtools') {
         console.log(this.answerWord)
       }
-      const latestTry = tries.value[tries.value.length - 1]
+      const latestTry = tries.getTheLast()
       if (!latestTry || 'end' in latestTry) {
-        tries.value.push({
+        tries.push({
           tries: continueLastGame ? lastQuestion.value!.tries.length : 0,
           start: Date.now() // TODO
         })
       } else {
-        tries.value.pop()
-        tries.value.push({
+        tries.pop()
+        tries.push({
           tries: continueLastGame ? lastQuestion.value!.tries.length : 0,
           start: Date.now() // TODO
         })
@@ -89,21 +86,22 @@ export const useMainStore = defineStore('main', {
       if (this.answerInput === '') return 0
       answerList.value.unshift(this.answerInput)
       this.setAnswerInput('')
-      if (this.currentTry) {
-        this.currentTry.tries++
+      const currentTry = tries.getTheLast()
+      if (currentTry) {
+        currentTry.tries++
       }
 
       if (answerList.value[0] === this.answerWord) {
-        this.currentTry!.end = Date.now()
-        this.currentTry!.passed = true
+        currentTry!.end = Date.now()
+        currentTry!.passed = true
         this.gameState = 1
         lastQuestion.value = null
         return this.gameState
       }
 
       if (answerList.value.length >= MAX_TRIES) {
-        this.currentTry!.end = Date.now()
-        this.currentTry!.passed = false
+        currentTry!.end = Date.now()
+        currentTry!.passed = false
         this.gameState = -1
         lastQuestion.value = null
         return this.gameState

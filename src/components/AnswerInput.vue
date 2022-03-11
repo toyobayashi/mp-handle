@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { useMainStore } from '../store/index'
 import { isFourCharWord } from '../utils/utils'
+import { tries } from '../utils/try'
 import GameButton from './GameButton.vue'
 // import { onReady } from '@dcloudio/uni-app'
 
@@ -44,8 +45,9 @@ const navigateHint = () => {
     })
     return
   }
-  if (mainStore.currentTry) {
-    mainStore.currentTry.hint = true
+  const currentTry = tries.getTheLast()
+  if (currentTry) {
+    currentTry.hint = true
   }
   uni.navigateTo({
     url: '/pages/tip/tip'

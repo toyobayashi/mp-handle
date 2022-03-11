@@ -23,6 +23,7 @@ import { onLoad, onReady } from '@dcloudio/uni-app'
 import { MAX_TRIES } from '../../utils/constants'
 import { computed } from 'vue'
 import { checkUpdate } from '../../utils/update'
+import { tries } from '../../utils/try'
 import { useInterstitialAd } from '../../composables/ad'
 // import AdDialog from '../../components/AdDialog.vue'
 
@@ -116,9 +117,10 @@ const showAnswer = () => {
         mainStore.gameState = -1
         lastQuestion.value = null
         answerList.value.unshift(mainStore.answerWord)
-        if (mainStore.currentTry) {
-          mainStore.currentTry.end = Date.now()
-          mainStore.currentTry.passed = false
+        const currentTry = tries.getTheLast()
+        if (currentTry) {
+          currentTry.end = Date.now()
+          currentTry.passed = false
         }
       }
     }
