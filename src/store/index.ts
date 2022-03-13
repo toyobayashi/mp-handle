@@ -26,10 +26,10 @@ export const useMainStore = defineStore('main', {
     parsedAnswer (state) {
       return parseAnswer(state.answer[0])
     },
-    hintChar (): ParsedChar {
+    hintChar (state): ParsedChar {
       let index: number
-      if (this.answer[1]) {
-        index = this.answer[0].indexOf(this.answer[1])
+      if (state.answer[1]) {
+        index = state.answer[0].indexOf(state.answer[1])
       } else {
         index = Math.floor(Math.random() * this.parsedAnswer.length)
       }
