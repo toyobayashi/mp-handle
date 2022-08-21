@@ -25,6 +25,7 @@ import { computed } from 'vue'
 import { checkUpdate } from '../../utils/update'
 import { tries } from '../../utils/try'
 import { useInterstitialAd } from '../../composables/ad'
+import { isFourCharWordInDict } from '../../utils/utils'
 // import AdDialog from '../../components/AdDialog.vue'
 
 const mainStore = useMainStore()
@@ -53,15 +54,27 @@ onReady(() => {
   const tip = '首次输入任意四字词语，根据汉字和拼音提示，再进一步猜出正确答案\n\n具体规则点击左上方问号，查看提示点击左上方灯泡'
   if (mainStore.sharedAnswer) {
     const sharedAnswer = mainStore.sharedAnswer
-    uni.showModal({
-      title: '提示',
-      content: '你的好友为你出了一道题。\n\n' + tip,
-      showCancel: false,
-      complete: () => {
-        mainStore.startGame(sharedAnswer)
-        checkUpdate()
-      }
-    })
+    if (!isFourCharWordInDict(sharedAnswer[0])) {
+      uni.showModal({
+        title: '提示',
+        content: '你的好友为你出了一道题，但该题已失效，将随机从题库抽取一个词语开始游戏',
+        showCancel: false,
+        complete: () => {
+          mainStore.startGame()
+          checkUpdate()
+        }
+      })
+    } else {
+      uni.showModal({
+        title: '提示',
+        content: '你的好友为你出了一道题。\n\n' + tip,
+        showCancel: false,
+        complete: () => {
+          mainStore.startGame(sharedAnswer)
+          checkUpdate()
+        }
+      })
+    }
   } else {
     if (firstVisit.value) {
       firstVisit.value = false

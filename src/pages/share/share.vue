@@ -23,6 +23,10 @@ export default defineComponent({
         throw new Error('请输入 4 个字的词语')
       }
 
+      if (!isFourCharWordInDict(word)) {
+        throw new Error('不是常用词，请输入常用的四字词语')
+      }
+
       if (hint.length !== 1) {
         throw new Error('请输入 1 个汉字提示')
       }
@@ -32,28 +36,15 @@ export default defineComponent({
       if (index === -1) {
         throw new Error('提示的汉字不在该四字词语中')
       }
-
-      return {
-        answerQuery: word + index,
-        isInDict: isFourCharWordInDict(word)
-      }
     }
 
     const validateShare = computed(() => {
-      let result
       try {
-        result = share(answerInput.value, hintInput.value)
+        share(answerInput.value, hintInput.value)
       } catch (err: any) {
         return {
           canShare: false,
           message: err.message
-        }
-      }
-
-      if (!result.isInDict) {
-        return {
-          canShare: true,
-          message: '该词不是常用的词语，不建议用这个词出题'
         }
       }
 
