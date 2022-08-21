@@ -108,7 +108,7 @@ const leftChance = computed(() => {
 const showAnswer = () => {
   uni.showModal({
     title: '提示',
-    content: '确认要展示答案吗？',
+    content: '确定要展示答案吗？',
     confirmText: '确定',
     cancelText: '再想想',
     success: (res) => {

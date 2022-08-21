@@ -75,7 +75,7 @@ const onClickTitle = () => {
       <view class="p">当四个格子都为青色时，你便赢得了游戏！</view>
       <view class="p">题目数量是有限的，你可能会遇到相同的题目</view>
       <view class="p">现有题目数量：{{ANSWERS.length}}</view>
-      <view class="p">如果你想要添加更多题目，可以访问本页顶部的小程序代码仓库地址，打开新的 Issue 或 Pull request。期待你的贡献。</view>
+      <view class="p">如果你想要添加更多题目或反馈拼音错误，可以访问本页顶部的小程序代码仓库地址，打开新的 Issue 或 Pull request。期待你的贡献。</view>
       <GameButton class="backhome" @click="backHome">返回游戏</GameButton>
     </view>
     <view class="ad-container" v-if="mainStore.enableAd">
